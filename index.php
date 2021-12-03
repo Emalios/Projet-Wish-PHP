@@ -18,8 +18,8 @@ $db->addConnection( [
  'driver' => 'mysql',
  'host' => 'webetu.univ-lorraine.fr',
  'database' => 'database',
- 'username' => 'user',
- 'password' => 'password',
+ 'username' => 'bergerat2u',
+ 'password' => 'hyth1894948:;',
  'charset' => 'utf8',
  'collation' => 'utf8_unicode_ci',
  'prefix' => ''
