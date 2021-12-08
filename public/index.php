@@ -1,18 +1,28 @@
 <?php
 
-use Illuminate\Database\Capsule\Manager as DB;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
-$app = new \Slim\App;
+use Slim\Factory\AppFactory;
+
+require __DIR__ . '/../vendor/autoload.php';
+
+$app = AppFactory::create();
+
 $app->get('/games/{id}',
  function (Request $req, Response $resp, $args) {
     print("cc");
+     $rs = $resp->withStatus( 201 ) ;
+     return $rs ;
  });
-$app->post('/games/{id}',
+/*$app->post('/games/{id}',
  function (Request $req, Response $resp, $args) {
     print("id");
- });
+ });*/
 $app->run();
 
+
+/*
 $db = new DB();
 $db->addConnection( [
  'driver' => 'mysql',
@@ -25,4 +35,4 @@ $db->addConnection( [
  'prefix' => ''
 ] );
 $db->setAsGlobal();
-$db->bootEloquent();
+$db->bootEloquent();*/
