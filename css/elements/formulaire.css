@@ -1,0 +1,79 @@
+h1{
+    text-align: center;
+}
+
+.category {
+    width: auto;
+    font-size: 1.2em;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    height: 40%;
+}
+
+.answer {
+    width: 88%;
+    margin: auto;
+    margin-top: 10px;
+    border-radius: 20px;
+    padding: 1%;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    text-align: center;
+}
+
+.answer > p {
+    font-size: 1.4em;
+}
+
+.wrong {
+    background-color: rgba(202, 49, 49, 0.808);
+    border: 5px rgba(236, 21, 21, 0.979) solid;
+}
+
+.right {
+    background-color: rgba(80, 202, 49, 0.493);
+    border: 5px rgba(21, 252, 0, 0.979) solid;
+}
+
+.right > p{
+    color:white;
+}
+
+.center-second-radio {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 50%;
+}
+
+button {
+    display: inline-block;
+    background-color: goldenrod;
+    border-radius: 10px;
+    border: 4px double #cccccc;
+    color: #eeeeee;
+    text-align: center;
+    font-size: 28px;
+    padding: 20px;
+    width: 200px;
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin: auto;
+    margin-top: 30px;
+}
+
+.date {
+    margin-left: 10px;
+    width: 60%;
+    height: 40%;
+}
+
+.date > div{
+    width: 100%;
+}
+
+select{
+    margin: 0 20px;
+    width: 100%;
+}

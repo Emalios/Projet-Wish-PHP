@@ -1,0 +1,58 @@
+/**
+* Ce fichier gère uniqument la couleur et le rendu non la taille
+*/
+
+.input-primary {
+  box-sizing: border-box;
+  color:#2b323d;
+  border: 1px solid #bbb;
+  font-size: 1em;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.select-primary {
+    border: 1px solid #bbb;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.select-primary:active{
+    background-color: #E9EBF8;
+}
+
+.label-primary {
+    padding: 5px;
+    text-align: left;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-weight: bold;
+}
+
+.button-primary {
+    display: inline-block;
+    background-color: #E9EBF8;
+    border-radius: 5px;
+    color: #2b323d;
+    border: none;
+    text-align: center;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+.second-button {
+    background-color: #B0413E;
+    color: white;
+    margin: auto;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    padding: 10px;
+    font-size: 1.3em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
+input:focus, select:focus, select:hover, textarea:focus{
+    outline: none;
+    border: 1px solid #bbb;
+}

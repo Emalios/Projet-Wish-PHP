@@ -1,0 +1,100 @@
+.expo {
+    padding: 0.25% 2% 2% 2%;
+    width: 90%;
+    margin: 5% auto;
+    background-color:  #dad0fd;
+    border-radius: 100px;
+    display: grid;
+    grid-template-rows: repeat(2,auto);
+}
+
+.expo-title{
+    text-align: center;
+    font-size: 2em;
+}
+
+.expo-bottom{
+    width: 95%;
+    padding: 20px;
+    margin: auto;
+    display: flex;
+}
+
+.exposition-image {
+    min-width: 20%;
+    max-width: 38%;
+}
+
+.imgExpo{
+    min-width: 20%;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.expo-data{
+    width: 80%;
+    border:1px solid black;
+    border-radius: 5px;
+    margin-left: 5%;
+    padding: 10px;
+}
+
+.expo-data > p {
+    font-size: 1.2em;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+@media all and (max-width: 800px){
+    body, html{
+        width: 100%;
+    }
+
+    .expo-title{
+        font-size: 3em;
+        margin: 15px;
+    }
+
+    .expo{
+        width: 85%;
+    }
+    .expo-date {
+        width: 90%;
+    }
+
+    .expo-bottom{
+        flex-direction: column;
+        padding: 0;
+    }
+
+    .exposition-image {
+        max-width: 80%;
+    }
+
+    .imgExpo{
+        margin: auto;
+        min-width: 70%;
+        max-width: 90%;
+    }
+    
+    .expo-data{
+        min-width: 90%;
+        margin: auto;
+        margin-top: 15px;
+    }
+
+    .current-img{
+        height: 100%;
+    }
+    .expo-data > p {
+        display: inline-block;
+        word-break: break-word;
+        font-size: 1.2em;
+        font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+    .expo{
+        height: auto;
+        border-radius: 20px;
+    }   
+    
+
+}

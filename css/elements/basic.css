@@ -1,0 +1,297 @@
+@font-face { /* on importe une police */
+  font-family: 'brightons';
+  src: url('../fonts/brightons-webfont2.woff2') format('woff2'),
+  url('fonts/brightons-webfont.woff') format('woff');
+  font-family: 'Patua';
+  src: url('../../fonts/PatuaOne-Regular.woff') format('woff');
+  font-family: 'Bebas';
+  src: url('../../fonts/Bebas.woff') format('woff');
+  font-family: 'Coolvetica';
+  src: url('../../fonts/coolvetica.woff') format('woff');
+  font-family: 'KG';
+  src: url('../../fonts/KG.woff') format('woff');
+  font-family: 'Cocogosse';
+  src: url('../../fonts/Cocogosse.woff') format('woff');
+}
+ 
+
+/* html prend une hauteur de 100 % */
+body, html{
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+header { /* on s'occupe du header : couleur, formes et marges... */
+  position: relative;
+  padding: 0 20px 0;
+  background-color: #f8a94e;
+  box-shadow: 1px 1px 1px 1px #cf8a3b;
+}
+
+h1, h2{
+  font-family: Arial;
+}
+
+p{
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.page{
+  min-height: 100%;
+  position: relative;
+  padding-bottom: 50px;
+}
+
+.page-container {
+  padding-bottom: 120px;
+  margin-bottom: 20px;
+}
+
+.sommaire { /* position du sommaire accueil et a propos */
+  display:flex;
+  align-items: center;
+  justify-content:flex-end;
+}
+
+.gauche{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px;
+}
+
+#footer {
+  position: absolute;
+  margin-top: 100px;
+  bottom: 0;
+  width: 100%;
+  background-color:black;
+  opacity: 0.8;
+  color: lightgray;
+  height: 120px;
+  font-size: 1.5em;
+  font-family: sans-serif;
+  text-align: center;
+}
+
+
+
+.profil {
+  border-radius: 8px;
+  min-height: 60px;
+  max-height: 120px;
+  min-width: 60px;
+  max-width: 100px;
+}
+
+.header-title{
+  font-family:  Coolvetica, Arial;
+  font-size: 2em;
+  padding-left: 20px;
+  color:white;
+}
+
+ul{
+  display: flex;
+  justify-content: flex-end;
+}
+ul > li  { /* on met en ligne la barre de navigation, la taille... */
+  display:inline-block;
+  font-size: 1em;
+  font-family: sans-serif;
+  margin-right: 40px;
+}
+
+nav { /* la barre de navigation prend une partie du header */
+  position: sticky;
+}
+
+.sommaire > #hamburger > #hamburger-content > nav > ul{ /* on retire les points des listes, et on le place */
+  list-style-type: none;
+  text-align: right;
+}
+
+
+nav a{ /* elements le déroulement des boites */
+  display: block;
+  text-decoration: none;
+  color: white;
+  font-family:  Coolvetica, Arial;
+  font-size: 3em;
+  border-bottom: 2px solid transparent;
+  padding: 10px 0px;
+}
+
+.details > li > a {
+  font-size: 1.2em;
+}
+
+.sommaire > #hamburger > #hamburger-content > nav > ul > li > a:hover{ /* lorsque l'on survole un élément, d'un menu déroulant */
+    border-bottom: 2px solid white;
+}
+
+.selected{
+  color:white;
+}
+
+.date {
+  display: flex;
+  flex-direction: row;
+}
+
+.liensFooter{
+  position: relative;
+  width:100%;
+  height: 100%;
+}
+
+.lFooter > a {
+  text-decoration: none;
+  color: white;
+  font-size: 0.7em;
+}
+
+.footerSousTitre{
+  font-size: 0.85em;
+}
+
+.copyR {
+  position:  absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 0.5em;
+}
+
+#hamburger-button{
+  display: none;
+}
+
+#hamburger {
+  width: 100%;
+}
+
+#hamburger, #hamburger-content{
+  display: inline;
+}
+
+#hamburger-button{
+  display: none;
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-size: 30px;
+  padding: 0;
+  vertical-align: top;
+  line-height: 47px;
+  margin-right: 32px;
+}
+
+#hamburger-overlay{
+  display: none;
+  position: fixed;
+  z-index: 10;
+  top:0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.4);
+}
+
+#hamburger-sidebar{
+  display: none;
+  position: fixed;
+  width: 50%;
+  z-index: 20;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: #FFF;
+  transform: translateX(-100%);
+  transition: transform .2s ease-out;
+}
+
+#hamburger-sidebar li{
+  display: block;
+}
+
+#hamburger-sidebar-header{
+  height: 75px;
+  background-color: #ECF4FE;
+}
+
+#hamburger-sidebar-body{
+  background-color: white;
+}
+
+#hamburger-sidebar-body li:before{
+  content: ' ';
+  display: inline-block;
+  vertical-align: middle;
+  width: 24px;
+  height: 24px;
+  margin-right: 16px;
+  margin-bottom: 4px;
+}
+
+.hamburger-activated #hamburger-sidebar{
+  transform: translateX(0);
+}
+
+@media only screen and (min-width: 200px) and (max-width: 1000px) {
+  .details{
+    padding-left: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  nav a {
+    color: black; 
+  }
+  
+  ul > li {
+    margin: 0;
+    list-style-type: none;
+    text-align: center;
+  }
+
+  #hamburger-content{
+    display: none;
+  }
+  
+  #hamburger-button, #hamburger-sidebar, .hamburger-activated #hamburger-overlay{
+    display: block;
+  }
+  
+  #hamburger-button {
+    width: 20px;
+    color: black;
+    margin: auto;
+    margin-right: 20px;
+  }
+
+  .gauche > h1{
+    font-size: 2em;
+  }
+
+  .hautTitre{
+    margin: auto;
+    width: 100%;
+    height: 50%;
+  }
+
+  .hautTitre > p{
+    font-family: Patua;
+    font-size: 1.8em;
+    margin: 0;
+    padding-top: 20px;
+    height: 100%;
+    text-align: center;
+    color: black;
+    background-color: #ECF4FE;
+  }
+}
