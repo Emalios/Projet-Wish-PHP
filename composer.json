@@ -1,6 +1,14 @@
 {
-    "require": {
-        "slim/slim": "4.*",
-        "slim/psr7": "^1.5"
-    }
+	"require":{
+		"illuminate/database": "8.*",
+		"slim/slim": "3.*",
+		"php": ">=7.3"
+	},
+
+	"autoload":{
+		"psr-4": {
+			"App\\" : "src/",
+            "Style\\" : "CssManager/"
+		}
+	}
 }
