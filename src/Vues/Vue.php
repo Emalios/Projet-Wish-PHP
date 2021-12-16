@@ -2,7 +2,6 @@
 
 namespace App\Vues; 
 
-
 abstract class Vue{
 
     private $content; 
@@ -27,6 +26,9 @@ abstract class Vue{
                 <head>
                     $css
                 </head>
+                <header> 
+                    <a href="/~cappelli6u/Wish/accueil">Accueil</a> 
+                </header>
                 <body>
                     <div class="content">  
                         $this->content 
