@@ -17,8 +17,8 @@ class VueLogin extends Vue{
         $html = <<<HTML
             <form action="/login" method="POST" class="center-right-form">
                 <div class="center-form-inside">
-                    <label for="titre" class="label-primary">Login</label>
-                    <input type="text" class="text" value="" placeholder="Entrez un login" name="login">
+                    <label for="titre" class="label-primary">Email</label>
+                    <input type="text" class="text" value="" placeholder="Entrez un login" name="email">
                     <label for="mdp" class="label-primary">Mot de passe</label>
                     <input type="password" class="text" value="" placeholder="Entrez un mot de passe" name="mdp">
                     <button type="submit">Se connecter</button>

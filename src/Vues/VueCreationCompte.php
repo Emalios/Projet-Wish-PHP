@@ -25,6 +25,8 @@ class VueCreationCompte extends Vue{
             <h1> Ajouter un compte : </h1>
             <form action="/creer-compte" method="POST" class="center-right-form">
                 <div class="center-form-inside">
+                    <label for="titre" class="label-primary">Email</label>
+                    <input type="email  " class="text" value="" placeholder="Entrez vortre email" name="email">
                     <label for="titre" class="label-primary">Login</label>
                     <input type="text" class="text" value="" placeholder="Entrez un login" name="login">
                     <label for="mdp" class="label-primary">Mot de passe</label>

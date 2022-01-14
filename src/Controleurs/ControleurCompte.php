@@ -29,13 +29,10 @@ class ControleurCompte{
         $messageErreur = ""; 
         // Si l'utilisateur a essaye de s'inscrire 
         if($req->getParsedBody() != null) {
-            if(strlen($req->getParsedBody()["login"]) > 12 || strlen($req->getParsedBody()["login"]) < 4) 
-                $messageErreur = "Le login ne fait pas la bonne taille [entre 4 et 12 attendu]";
+            $res = Compte::createUser($req->getParsedBody()["email"], $req->getParsedBody()["login"], $req->getParsedBody()["mdp"]);
+            if(is_string($res)) 
+                $messageErreur = $res;
             else {
-                $c = new Compte();
-                $c->login = $_POST['login']; 
-                $c->password = password_hash($_POST['mdp'], PASSWORD_DEFAULT, ['cost' => 12]);
-                $c->save();
                 header('location: /login');
                 exit;
             }
@@ -50,20 +47,14 @@ class ControleurCompte{
             header('location: /accueil'); 
             exit;
         }
-        if(isset($_POST['login'])) {
-            $login = $_POST['login']; 
-            $c = Compte::where( 'login', '=', $login )->first();
-            if($c == null){
-                header("Location: /login"); 
-                exit; 
-            } else {
-                if (password_verify($_POST['mdp'], $c->password)) {
-                    $_SESSION['login'] = $login;
-                    header("Location: /mon-compte"); 
-                    exit; 
-                }
-                else echo('non connecté'); 
-            }
+        if($req->getParsedBody() != null) {
+            $email = $req->getParsedBody()['email']; 
+            $password = $req->getParsedBody()['mdp']; 
+            $res = Compte::seConnecter($email, $password); 
+            if($res) {
+                header('location: /accueil'); 
+                exit;
+            }  
         }
         $vue = new Vues\VueLogin($this->container, $req);
         $resp->getBody()->write($vue->render());
