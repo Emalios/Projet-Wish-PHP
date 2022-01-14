@@ -6,10 +6,16 @@ abstract class Vue{
 
     private $content; 
 
+    private $container; 
+
+    private $requete; 
+
     protected $css; 
 
-    public function __construct($content){
+    public function __construct($content, $container, $req){
         $this->content = $content; 
+        $this->container = $container; 
+        $this->requete = $req; 
     }
 
     public abstract function createContent() : string; 
@@ -20,6 +26,15 @@ abstract class Vue{
     public function render(){ 
         $this->content = $this->createContent(); 
         $css = $this->linkCss(); 
+
+        $container = $this->container ;
+        $base = $this->requete->getUri()->getBasePath() ;
+        $accueil = $base . $container->router->pathFor( 'accueil') ;
+        $publique = $base . $container->router->pathFor( 'listes_publiques') ;
+        $createurs = $base . $container->router->pathFor( 'createurs') ;
+
+        $compte = (isset($_SESSION['login'])) ? "<a href='/mon-compte']>Mon compte</a>" : "<a href='/creer-compte']>Créer compte</a> <a href='/login']>Se connecter</a>";
+        
         return <<<HTML
             <!DOCTYPE html> 
             <html>
@@ -27,7 +42,10 @@ abstract class Vue{
                     $css
                 </head>
                 <header> 
-                    <a href="/~cappelli6u/Wish/accueil">Accueil</a> 
+                    <a href="$accueil">Accueil</a> 
+                    <a href="$publique">Listes publiques</a> 
+                    <a href="$createurs">Listes des créateurs publiques</a> 
+                    $compte
                 </header>
                 <body>
                     <div class="content">  
