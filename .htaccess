@@ -1,12 +1,12 @@
 RewriteEngine On
 #
 # RewriteBase indispensable sur webetu :
+RewriteBase /www/cappelli6u/mywishlist
+
 
 #
 # Pour interdire l'accès aux répertoires contenant du code
-RewriteRule ^sql(/.*|)$ - [NC,F]
-RewriteRule ^src(/.*|)$ - [NC,F]
-RewriteRule ^vendor(/.*|)$ - [NC,F]
+
 
 #
 # réécriture pour slim

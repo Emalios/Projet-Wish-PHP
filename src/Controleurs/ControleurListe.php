@@ -23,7 +23,7 @@ class ControleurListe {
 
     public function getList(Request $req, Response $resp, $args){
         // On recupere la liste avec le token du proprietaire 
-        $liste = Liste::where( 'token', '=', $args["id"] )->first();
+        $liste = Liste::where( 'token', '=', $args["token"] )->first();
 
         // Si on ne l'a pas trouvé alors on essaie de le trouver avec le token de participation
         if($liste == null){
@@ -35,13 +35,13 @@ class ControleurListe {
             $cookieName = 'propListe' . $liste["no"];
             $estProprio = isset($_COOKIE[$cookieName]) && $_COOKIE[$cookieName] == $liste["token"];
         }
-
+        
         // On recupere alors la liste des items associes 
         $listeItems = Item::where( 'liste_id', '=', $liste["no"])->get();
-
+        
         // Ainsi que les messages 
         $messages = ListeMessage::where( 'liste_id', '=', $liste["no"])->get();
-
+        
         // On regarde si un message a ete poste 
         if(isset($_POST['message'])){
             $rm = new ListeMessage();
@@ -51,12 +51,12 @@ class ControleurListe {
             header("Location: /liste/" . $args["id"]);
             exit; 
         }
-
+        
         $messagesItems = []; 
         foreach($listeItems as $item){
-            $itemMessage = ReservationMessage::where( 'item_id', '=', $listeItems["id"])->first();
+            $itemMessage = ReservationMessage::where( 'item_id', '=', $item["id"])->first();
             if($itemMessage != null)
-                $messagesItems[$item->id] =  $itemMessage->commentaire;
+            $messagesItems[$item->id] =  $itemMessage->commentaire;
         }
 
         // Rendu 
@@ -91,7 +91,7 @@ class ControleurListe {
     public function modifierListe(Request $req, Response $resp, $args){
         $l = Liste::where( 'token', '=', $args["id"] )->first();
         $listeItems = Item::where( 'liste_id', '=', $l["no"])->get();
-        if(isset($_GET['supprimer'])){
+        if($req->getQueryParam()["supprimer"]){
             if($_GET['supprimer'] == 'all'){
                 $items = Item::where( 'liste_id', '=', $l->no)->get();
                 foreach ($items as $item) {
@@ -99,7 +99,6 @@ class ControleurListe {
                     $item->save();
                 }
             } else {
-
                 $item = Item::where( 'id', '=', $_GET['supprimer'])->first();
                 $item->delete();
             }
@@ -139,6 +138,7 @@ class ControleurListe {
             exit; 
         }   
         $vue = new Vues\VueModifierListe($l, $listeItems, $this->container, $req);
+        $resp->getBody()->write($vue->render());
         return $resp;
     }
 

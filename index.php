@@ -16,16 +16,21 @@ $db = ConnexionFactory::makeConnexion();
 $db->setAsGlobal();
 $db->bootEloquent();  
 
-$configuration = ['settings' => [] ] ;
+
+$configuration = [
+   'settings' => [
+   'displayErrorDetails' => true ]
+];
 $c = new \Slim\Container($configuration);
 
 $app = new \Slim\App;
 
-$app->get('/liste/{id}', function (Request $req, Response $resp, $args) {
+$app->get('/liste/{token}', function (Request $req, Response $resp, $args) {
    $controleur = new ControleurListe($this); 
    return $controleur->getList($req, $resp, $args);
 })->setName("liste");
-$app->post('/liste/{id}', function (Request $req, Response $resp, $args) {  
+
+$app->post('/liste/{token}', function (Request $req, Response $resp, $args) {  
    $controleur = new ControleurListe($this); 
    return $controleur->getList($req, $resp, $args);
  });
@@ -65,7 +70,7 @@ $app->post('/modifier-item/{id}', function (Request $req, Response $resp, $args)
    return $controleur->modifierItem($req, $resp, $args);
 })->setName("modifier-liste");
 
-$app->get('/item/{id}', function (Request $req, Response $resp, $args) {  
+$app->get('/{token}/item/{id}', function (Request $req, Response $resp, $args) {  
    $controleur = new ControleurItem($this); 
    return $controleur->getItem($req, $resp, $args);
 })->setName("item");
@@ -119,7 +124,6 @@ $app->get('/listes-publiques', function (Request $req, Response $resp, $args) {
 })->setName("listes_publiques");
 
 $app->get('/listes-createurs', function (Request $req, Response $resp, $args) {  
-   echo($this);
    $controleur = new ControleurCompte($this); 
    return $controleur->afficherListeCreateurs($req, $resp, $args);
 })->setName("createurs");

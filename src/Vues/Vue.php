@@ -6,9 +6,9 @@ abstract class Vue{
 
     private $content; 
 
-    private $container; 
+    protected $container; 
 
-    private $requete; 
+    protected $requete; 
 
     protected $css; 
 
@@ -29,9 +29,9 @@ abstract class Vue{
 
         $container = $this->container ;
         $base = $this->requete->getUri()->getBasePath() ;
-        $accueil = $base . $container->router->pathFor( 'accueil') ;
-        $publique = $base . $container->router->pathFor( 'listes_publiques') ;
-        $createurs = $base . $container->router->pathFor( 'createurs') ;
+        $accueil =  $container->router->pathFor( 'accueil') ;
+        $publique =  $container->router->pathFor( 'listes_publiques') ;
+        $createurs = $container->router->pathFor( 'createurs') ;
 
         $compte = (isset($_SESSION['login'])) ? "<a href='/mon-compte']>Mon compte</a>" : "<a href='/creer-compte']>Créer compte</a> <a href='/login']>Se connecter</a>";
         

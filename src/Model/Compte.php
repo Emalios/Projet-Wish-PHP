@@ -38,4 +38,13 @@ class Compte extends \Illuminate\Database\Eloquent\Model {
         $_SESSION['login'] = $c['login']; 
         return true; 
     }
+
+    public static function isConnected(){
+        return isset($_SESSION["login"]);
+    }
+
+    public static function isOwner($idUser, $listToken){
+        $l = Liste::where('token', '=', $listToken); 
+        return $l->createur_id = $idUser; 
+    }
 }

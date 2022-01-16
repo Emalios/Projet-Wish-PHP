@@ -16,7 +16,7 @@ class VueAccueil extends Vue{
         $titre = "Accueil";
         if(isset($_SESSION["login"])) $name = $_SESSION["login"];
         $html = <<<HTML
-            <h1> Bonjour $name </h1>
+            <h1> Wish liste </h1>
             <a href="/liste/1"> Liste 1 </p>
             <a href="/ajouter-liste"> Ajouter une liste </p>
         HTML;

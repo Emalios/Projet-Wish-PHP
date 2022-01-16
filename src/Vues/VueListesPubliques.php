@@ -18,7 +18,8 @@ class VueListesPubliques extends Vue{
     public function createContent() : string{
         $res = ""; 
         foreach($this->listes as $liste){
-            $res .= "<p> " . $liste->titre . "</p><a href='/liste/" . $liste->token . "'>Voir</a><br>";
+            $path =  $this->container->router->pathFor( 'liste', ["token" => $liste->token]) ;
+            $res .= "<p> " . $liste->titre . "</p><a href='$path'>Voir</a><br>";
         }
         return $res;
     }

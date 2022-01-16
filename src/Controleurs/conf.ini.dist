@@ -1,0 +1,7 @@
+driver=mysql
+username=cappelli6u
+password=93{]PA
+host=webetu.iutnc.univ-lorraine.fr
+database=cappelli6u
+charset=utf8
+collation=utf8_unicode_ci

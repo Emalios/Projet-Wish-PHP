@@ -22,8 +22,8 @@ class VueModifierItem extends Vue{
     }
 
     public function createContent() : string{
-        $cookieName = "propListe" . $this->item["liste_id"]; 
-        if(!isset($_COOKIE[$cookieName])) return $this->notAccessible(); 
+     //   $cookieName = "propListe" . $this->item["liste_id"]; 
+       // if(!isset($_COOKIE[$cookieName])) return $this->notAccessible(); 
         $nom = $this->item["nom"] ; 
         $prix = '"' . $this->item["tarif"] . '"'; 
         $url = '"' . $this->item["url"] . '"'; 

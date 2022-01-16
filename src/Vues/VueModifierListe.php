@@ -26,8 +26,8 @@ class VueModifierListe extends Vue{
     }
 
     public function createContent() : string{
-        $cookieName = "propListe" . $this->liste["no"]; 
-        if(!isset($_COOKIE[$cookieName]) || $_COOKIE[$cookieName] != $this->liste["token"]) return $this->notAccessible(); 
+      //  $cookieName = "propListe" . $this->liste["no"]; 
+        //if(!isset($_COOKIE[$cookieName]) || $_COOKIE[$cookieName] != $this->liste["token"]) return $this->notAccessible(); 
         $titre = $this->liste["titre"]; 
         $description = $this->liste["description"];
         $date = Elements::dateDropDown($this->liste['expiration']); 
