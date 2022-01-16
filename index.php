@@ -119,8 +119,7 @@ $app->get('/listes-publiques', function (Request $req, Response $resp, $args) {
    return $controleur->afficherListesPubliques($req, $resp, $args);
 })->setName("listes_publiques");
 
-$app->get('/listes-createurs', function (Request $req, Response $resp, $args) {  
-   echo($this);
+$app->get('/listes-createurs', function (Request $req, Response $resp, $args) {
    $controleur = new ControleurCompte($this); 
    return $controleur->afficherListeCreateurs($req, $resp, $args);
 })->setName("createurs");
