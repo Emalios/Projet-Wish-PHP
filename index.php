@@ -37,12 +37,12 @@ $app->get('/accueil', function (Request $req, Response $resp, $args) {
  })->setName('accueil');
 
 $app->get('/ajouter-liste', function (Request $req, Response $resp, $args) {  
-    $controleur = new ControleurListe($this); 
+    $controleur = new ControleurListe($this);
     return $controleur->ajouterListe($req, $resp, $args);
 })->setName('ajouter-liste');
 
 $app->post('/ajouter-liste', function (Request $req, Response $resp, $args) {
-   $controleur = new ControleurListe($this); 
+   $controleur = new ControleurListe($this);
    return $controleur->ajouterListe($req, $resp, $args);
 });
 

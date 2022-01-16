@@ -72,13 +72,19 @@ class ControleurListe {
     }
 
     /**
-     * Méthode permettant de créer une liste à partir d'informations
+     * Méthode permettant de créer une liste à partir d'informations. Il faut être connecté
      * @param Request $req
      * @param Response $resp
      * @param $args
      * @return erreur ou rien
      */
     public function ajouterListe(Request $req, Response $resp, $args){
+        //Si l'utilisateur n'est pas connecté, alors il ne peut pas créer de liste.
+        if(!isset($_SESSION['login'])) {
+            header('location: /accueil');
+            exit;
+        }
+        //S'il est connecté, il peut créer une liste
         if(isset($_POST['titre'])){
             $l = new Liste();
             $l->titre = $_POST['titre'];
