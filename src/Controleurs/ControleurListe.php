@@ -91,7 +91,7 @@ class ControleurListe {
             $l->description = $_POST['desc'];
             $l->token = bin2hex(openssl_random_pseudo_bytes(16)); 
             $l->tokenParticipation = bin2hex(openssl_random_pseudo_bytes(16)); 
-            $l->publique = ($_POST['publique'] == 'on') ? 1 : 0;
+            $l->publique = isset($_POST['publique']);
             $l->createur_login = (isset($_SESSION['login'])) ? $_SESSION['login'] : "Non identifié"; 
             $annee = $_POST['année']; 
             $mois = $_POST['mois']; 
