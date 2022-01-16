@@ -117,7 +117,18 @@ class ControleurListe {
      * @return erreur ou rien
      */
     public function modifierListe(Request $req, Response $resp, $args){
+        //Si l'utilisateur n'est pas connecté, alors il ne peut pas modifier de liste.
+        if(!isset($_SESSION['login'])) {
+            header('location: /accueil');
+            exit;
+        }
         $l = Liste::where( 'token', '=', $args["id"] )->first();
+        $c = Compte::where('login', '=', $_SESSION['login'])->first();
+        //Pour modifier une liste, l'utilisateur doit avoir créer la liste
+        if($l->createur_id != $c->id) {
+            header('location: /accueil');
+            exit;
+        }
         $listeItems = Item::where( 'liste_id', '=', $l["no"])->get();
         if(isset($_GET['supprimer'])){
             if($_GET['supprimer'] == 'all'){
@@ -167,6 +178,7 @@ class ControleurListe {
             exit; 
         }   
         $vue = new Vues\VueModifierListe($l, $listeItems, $this->container, $req);
+        $resp->getBody()->write($vue->render());
         return $resp;
     }
 
