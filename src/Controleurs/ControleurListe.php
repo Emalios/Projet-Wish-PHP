@@ -3,6 +3,7 @@
 
 namespace App\Controleurs; 
 
+use App\Model\Compte;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use App\Model\Liste as Liste; 
@@ -92,7 +93,8 @@ class ControleurListe {
             $l->token = bin2hex(openssl_random_pseudo_bytes(16)); 
             $l->tokenParticipation = bin2hex(openssl_random_pseudo_bytes(16)); 
             $l->publique = isset($_POST['publique']);
-            $l->createur_login = (isset($_SESSION['login'])) ? $_SESSION['login'] : "Non identifié"; 
+            $c = Compte::where('login', '=', $_SESSION['login'])->first();
+            $l->createur_id = $c->id;
             $annee = $_POST['année']; 
             $mois = $_POST['mois']; 
             $jour = $_POST['jour'];	
