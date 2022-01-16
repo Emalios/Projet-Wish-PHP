@@ -8,8 +8,13 @@ class ConnexionFactory{
 
     private static $host, $pass, $user, $db; 
 
-    private static $connexion; 
+    private static $connexion;
 
+    /**
+     * méthode définissant les paramètres personnels à appliquer au projet
+     * @param $file fichier de config
+     * @return void
+     */
     public static function setConfig($file){
         $init = parse_ini_file($file);
         static::$host = $init['host']; 
@@ -17,7 +22,11 @@ class ConnexionFactory{
         static::$user = $init['username']; 
         static::$db = $init['database']; 
     }
-    
+
+    /**
+     * méthode effectuant une connection à la base de donnée
+     * @return connection à la base de donnée avec les paramètres établies
+     */
     public static function makeConnexion(){
         if(static::$connexion == null){
             $db = new DB();

@@ -20,7 +20,13 @@ class ControleurListe {
         $this->container = $c;
     }
 
-
+    /**
+     * Méthode permettant de récupèrer une liste à partir de son id ou bien du token de participation
+     * @param Request $req
+     * @param Response $resp
+     * @param $args
+     * @return erreur ou rien
+     */
     public function getList(Request $req, Response $resp, $args){
         // On recupere la liste avec le token du proprietaire 
         $liste = Liste::where( 'token', '=', $args["id"] )->first();
@@ -65,6 +71,13 @@ class ControleurListe {
         return $resp;
     }
 
+    /**
+     * Méthode permettant de créer une liste à partir d'informations
+     * @param Request $req
+     * @param Response $resp
+     * @param $args
+     * @return erreur ou rien
+     */
     public function ajouterListe(Request $req, Response $resp, $args){
         if(isset($_POST['titre'])){
             $l = new Liste();
@@ -88,6 +101,13 @@ class ControleurListe {
         return $resp;
     }
 
+    /**
+     * Méthode permettant de modifier une liste en fonction de son id
+     * @param Request $req
+     * @param Response $resp
+     * @param $args
+     * @return erreur ou rien
+     */
     public function modifierListe(Request $req, Response $resp, $args){
         $l = Liste::where( 'token', '=', $args["id"] )->first();
         $listeItems = Item::where( 'liste_id', '=', $l["no"])->get();
@@ -142,6 +162,13 @@ class ControleurListe {
         return $resp;
     }
 
+    /**
+     * méthode permettant d'afficher toutes les listes publiques
+     * @param Request $req
+     * @param Response $resp
+     * @param $args
+     * @return listes publiques
+     */
     public function afficherListesPubliques(Request $req, Response $resp, $args){
         $listes = Liste::where("publique", "=", 1)->where("expiration", ">=", date("YYYY-mm-dd"))->get()->sortBy("expiration"); 
         $vue = new Vues\VueListesPubliques($listes,$this->container, $req);
@@ -149,11 +176,21 @@ class ControleurListe {
         return $resp;
     }
 
+    /**
+     * méthode permettant de tester si les images existent bien
+     * @return bool
+     */
     public static function checkImg() {
         if((empty($_FILES['photo']['name']) || !exif_imagetype($_FILES['photo']['tmp_name']))) return false;
         return true;
     }
 
+    /**
+     * méthode permettant de bien formatter un lien vers les fichiers
+     * @param string $fileName
+     * @param string $subDirectory
+     * @return string
+     */
     public static function getValidLink(string $fileName, string $subDirectory = "") : string {
         if(strlen($fileName) > 30)  
             $fileName = substr($fileName, 0,20);

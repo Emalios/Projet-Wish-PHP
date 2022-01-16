@@ -44,6 +44,10 @@ class VueItem extends Vue{
         return "<h1> Item non trouvé </h1>";
     }
 
+    /**
+     * méthode permettant de créer un formulaire afin de créer un item
+     * @return string
+     */
     public function createForm() : string{
         $link = '"/item/' . $this->item["id"] . '"';
         $formCagnotte = ""; 

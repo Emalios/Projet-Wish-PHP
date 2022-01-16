@@ -42,6 +42,12 @@ class ControleurCompte{
         return $resp;
     }
 
+    /**
+     * @param Request $req requête
+     * @param Response $resp réponse
+     * @param $args arguments
+     * @return rien si déjà connecté, sinon erreur si mauvais identifiants
+     */
     public function seConnecter(Request $req, Response $resp, $args){
         if(isset($_SESSION['login'])) {
             header('location: /accueil'); 
@@ -61,6 +67,13 @@ class ControleurCompte{
         return $resp;
     }
 
+    /**
+     * méthode redirigeant l'utilisateur en fonction de ce qu'il demande, en fonction du paramètre 'query'
+     * @param Request $req
+     * @param Response $resp
+     * @param $args
+     * @return Response|void
+     */
     public function gestionCompte(Request $req, Response $resp, $args){
         if($req->getQueryParams()["query"] == "participations"){
             $participations = ListeCompte::where("loginCompte", "=", $_SESSION['login'])->get(); 
@@ -80,7 +93,14 @@ class ControleurCompte{
         $resp->getBody()->write($vue->render());
         return $resp;
     }
-    
+
+    /**
+     * méthode permettant de changer son mot de passe
+     * @param Request $req
+     * @param Response $resp
+     * @param $args
+     * @return Response|void
+     */
     public function modifierCompte(Request $req, Response $resp, $args){
         echo($_SESSION['login']);
         $c = Compte::where( 'login', '=', $_SESSION['login'] )->first();
@@ -96,6 +116,13 @@ class ControleurCompte{
         return $resp;
     }
 
+    /**
+     * Méthode affichant tous les créateurs des listes publiques
+     * @param Request $req
+     * @param Response $resp
+     * @param $args
+     * @return Response
+     */
     public function afficherListeCreateurs(Request $req, Response $resp, $args){
         $listes = Liste::where( 'publique', '=', 1 )->get();
         foreach($listes as $liste){

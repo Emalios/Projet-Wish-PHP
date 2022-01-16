@@ -31,6 +31,12 @@ class Compte extends \Illuminate\Database\Eloquent\Model {
         }
     }
 
+    /**
+     * méthode permettant de savoir si les logins sont corrects
+     * @param $email email
+     * @param $password mot de passe
+     * @return vrai si identifiants correct sinon false
+     */
     public static function seConnecter($email, $password) : mixed {
         $c = Compte::where( 'email', '=', $email )->first();
         if($c == null && !password_verify($password, $c->password))
