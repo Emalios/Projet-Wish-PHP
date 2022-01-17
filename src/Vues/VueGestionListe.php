@@ -51,12 +51,83 @@ class VueGestionListe extends Vue{
         }
     } 
 
-    private function getFormMessage() : string{
+    
+    public function linkCss() : string{
+        $links = ['pages/liste.css'];
+        return loadCss::toHtml($links);
+    }
+    public function createContent() : string{ 
+        // Si la liste n'existe pas on affiche un resultat par defaut
+        if($this->list == null) return $this->notFound(); 
+        
+        $liste = $this->list;
+        $token = $liste->token;
+        
+        $listeItems = "";
+        
+        // On prepare l'affichage de chaque item
+        foreach($this->items as $item){ 
+            $listeItems .= $this->getItemDesc($item, $token);
+        }
+        
+        $mess = ""; 
+        
+        // On gere l'affichage des eventuels message 
+        foreach ($this->messages as $message){
+            $mess .= "<p> " . $message->message  . "</p><br/>";
+        }
+        
+        if($this->estReserve) 
+            $etat = "Cette liste est entièrement réservée";
+        else 
+            $etat = "Cette liste n'est pas entièrement réservée";
+        
+        if(Compte::isConnected())
+            $sendMessage = $this->getFormMessage($token); 
+        else 
+            $sendMessage = "Pour envoyer un message, il faut se connecter";
+        
+        if($this->estProprietaire)
+            $ownerFunctions = $this->getOwnerFunctions(); 
+        else 
+            $ownerFunctions = ""; 
+        
         $html = <<<HTML
-        HTML;
+            <h1> Liste : $liste->titre </h1>
+            <p> $etat </p>
+            <p> $liste->description </p>
+            <p> Date d'expiration : $liste->expiration </p> 
+            $ownerFunctions
+            $listeItems
+            $mess
+            $sendMessage        
+        HTML; 
         return $html;
     }
 
+    private function getOwnerFunctions(){
+        $token = $this->list->token;
+        return <<<HTML
+            <div>
+                <a href="">Ajouter un item</a>
+                <a href="/modifier-liste/$token">Modifier liste</a>
+                <a href="">Supprimer liste</a>
+            </div>
+        HTML; 
+    }
+    
+    private function getFormMessage($token) : string{
+        $link = "'/liste/$token'"; 
+        $html = <<<HTML
+            <form action=$link method="POST" class="center-right-form">
+                <label for="titre" class="label-primary">Message</label>
+                <textarea class="text" name="message"></textarea>
+                <button type="submit" class="second-button">Enregistrer</button>
+            </form>
+        HTML;
+        return $html;
+    }
+    
     private function getItemDesc($item, $tokenListe){
         if($item == null) return "";
         if($item["nomReserveur"] == null) 
@@ -68,62 +139,15 @@ class VueGestionListe extends Vue{
         if(!$this->estProprietaire) $res = ""; 
         if(filter_var($item["img"], FILTER_VALIDATE_URL)) $src = $item["img"]; 
         else $src =  "/img/$item->img";
-
+    
         ($item->cagnotte != "") ? $cagnotte = "Cagnotte pour l'item : $item->cagnotte" : $cagnotte = "";
-
+    
         return <<<HTML
             <p> <a href="/$tokenListe/item/$item->id">  $item->titreItem </a> $item->desc Cout = $item->tarif <p>
             <p> $etat </p>
             <p> $cagnotte </p>
             <img src="$src" . alt="Image de l'item"/>
         HTML;
-    }
-
-    public function linkCss() : string{
-        $links = ['pages/liste.css'];
-        return loadCss::toHtml($links);
-    }
-    public function createContent() : string{ 
-        // Si la liste n'existe pas on affiche un resultat par defaut
-        if($this->list == null) return $this->notFound(); 
-
-        $liste = $this->list;
-        $token = $liste->token;
-
-        $listeItems = "";
-
-        // On prepare l'affichage de chaque item
-        foreach($this->items as $item){ 
-            $listeItems .= $this->getItemDesc($item, $token);
-        }
-
-        $mess = ""; 
-
-        // On gere l'affichage des eventuels message 
-        foreach ($this->messages as $message){
-            $mess .= "<p> " . $message->message  . "</p><br/>";
-        }
-
-        if($this->estReserve) 
-            $etat = "Cette liste est entièrement réservée";
-        else 
-            $etat = "Cette liste n'est pas entièrement réservée";
-
-        if(Compte::isConnected())
-            $sendMessage = $this->getFormMessage(); 
-        else 
-            $sendMessage = "Pour envoyer un message, il faut se connecter";
-
-        $html = <<<HTML
-            <h1> Liste : $liste->titre </h1>
-            <p> $etat </p>
-            <p> $liste->description </p>
-            <p> Date d'expiration : $liste->expiration </p> 
-            $listeItems
-            $mess
-            $sendMessage        
-        HTML; 
-        return $html;
     }
 
     public function notFound() : string {
