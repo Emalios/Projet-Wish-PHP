@@ -129,10 +129,10 @@ class ControleurCompte{
      * @return Response
      */
     public function afficherListeCreateurs(Request $req, Response $resp, $args){
-        $listes = Liste::where( 'publique', '=', 1 )->get();
+        $listes = Liste::where('publique', '=', 1 )->get();
         foreach($listes as $liste){
-            if($liste->createur_login != null && $liste->createur_login != "Non identifié"){
-                $c = Compte::where( 'login', '=', $liste->createur_login)->first(); 
+            if($liste->createur_id != null && $liste->createur_id != "Non identifié"){
+                $c = Compte::where( 'id', '=', $liste->createur_id)->first();
                 $comptes[] = $c;
             }
         }
