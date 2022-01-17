@@ -49,7 +49,8 @@ class VueItem extends Vue{
      * @return string
      */
     public function createForm() : string{
-        $link = '"/item/' . $this->item["id"] . '"';
+        $item = $this->item;
+        $link = "'/item/$item->id'";
         $formCagnotte = ""; 
         if($this->item->cagnotte != ""){
             $tarif = $this->item->tarif; 
