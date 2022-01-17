@@ -3,6 +3,7 @@
 
 namespace App\Controleurs; 
 
+use App\Model\Compte;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use App\Model\Liste as Liste; 
@@ -20,7 +21,13 @@ class ControleurListe {
         $this->container = $c;
     }
 
-
+    /**
+     * Méthode permettant de récupèrer une liste à partir de son id ou bien du token de participation
+     * @param Request $req
+     * @param Response $resp
+     * @param $args
+     * @return erreur ou rien
+     */
     public function getList(Request $req, Response $resp, $args){
         // On recupere la liste avec le token du proprietaire 
         $liste = Liste::where( 'token', '=', $args["token"] )->first();
@@ -65,15 +72,29 @@ class ControleurListe {
         return $resp;
     }
 
+    /**
+     * Méthode permettant de créer une liste à partir d'informations. Il faut être connecté
+     * @param Request $req
+     * @param Response $resp
+     * @param $args
+     * @return erreur ou rien
+     */
     public function ajouterListe(Request $req, Response $resp, $args){
+        //Si l'utilisateur n'est pas connecté, alors il ne peut pas créer de liste.
+        if(!isset($_SESSION['login'])) {
+            header('location: /accueil');
+            exit;
+        }
+        //S'il est connecté, il peut créer une liste
         if(isset($_POST['titre'])){
             $l = new Liste();
             $l->titre = $_POST['titre'];
             $l->description = $_POST['desc'];
             $l->token = bin2hex(openssl_random_pseudo_bytes(16)); 
             $l->tokenParticipation = bin2hex(openssl_random_pseudo_bytes(16)); 
-            $l->publique = ($_POST['publique'] == 'on') ? 1 : 0;
-            $l->createur_login = (isset($_SESSION['login'])) ? $_SESSION['login'] : "Non identifié"; 
+            $l->publique = isset($_POST['publique']);
+            $c = Compte::where('login', '=', $_SESSION['login'])->first();
+            $l->createur_id = $c->id;
             $annee = $_POST['année']; 
             $mois = $_POST['mois']; 
             $jour = $_POST['jour'];	
@@ -88,8 +109,26 @@ class ControleurListe {
         return $resp;
     }
 
+    /**
+     * Méthode permettant de modifier une liste en fonction de son id
+     * @param Request $req
+     * @param Response $resp
+     * @param $args
+     * @return erreur ou rien
+     */
     public function modifierListe(Request $req, Response $resp, $args){
+        //Si l'utilisateur n'est pas connecté, alors il ne peut pas modifier de liste.
+        if(!isset($_SESSION['login'])) {
+            header('location: /accueil');
+            exit;
+        }
         $l = Liste::where( 'token', '=', $args["id"] )->first();
+        $c = Compte::where('login', '=', $_SESSION['login'])->first();
+        //Pour modifier une liste, l'utilisateur doit avoir créer la liste
+        if($l->createur_id != $c->id) {
+            header('location: /accueil');
+            exit;
+        }
         $listeItems = Item::where( 'liste_id', '=', $l["no"])->get();
         if($req->getQueryParam()["supprimer"]){
             if($_GET['supprimer'] == 'all'){
@@ -142,6 +181,13 @@ class ControleurListe {
         return $resp;
     }
 
+    /**
+     * méthode permettant d'afficher toutes les listes publiques
+     * @param Request $req
+     * @param Response $resp
+     * @param $args
+     * @return listes publiques
+     */
     public function afficherListesPubliques(Request $req, Response $resp, $args){
         $listes = Liste::where("publique", "=", 1)->where("expiration", ">=", date("YYYY-mm-dd"))->get()->sortBy("expiration"); 
         $vue = new Vues\VueListesPubliques($listes,$this->container, $req);
@@ -149,11 +195,21 @@ class ControleurListe {
         return $resp;
     }
 
+    /**
+     * méthode permettant de tester si les images existent bien
+     * @return bool
+     */
     public static function checkImg() {
         if((empty($_FILES['photo']['name']) || !exif_imagetype($_FILES['photo']['tmp_name']))) return false;
         return true;
     }
 
+    /**
+     * méthode permettant de bien formatter un lien vers les fichiers
+     * @param string $fileName
+     * @param string $subDirectory
+     * @return string
+     */
     public static function getValidLink(string $fileName, string $subDirectory = "") : string {
         if(strlen($fileName) > 30)  
             $fileName = substr($fileName, 0,20);

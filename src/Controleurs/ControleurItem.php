@@ -21,6 +21,13 @@ class ControleurItem {
     }
 
 
+    /**
+     * méthode retournant un item s'il existe
+     * @param Request $req
+     * @param Response $resp
+     * @param $args
+     * @return Item s'il existe sinon rien
+     */
     public function getItem(Request $req, Response $resp, $args){
         $item = Item::where( 'id', '=', $args["id"] )->first();
         if(isset($_POST['nomReserveur'])){
@@ -57,6 +64,13 @@ class ControleurItem {
         return $resp;
     }
 
+    /**
+     * Méthode permettant de changer les charactèristiques d'un item
+     * @param Request $req
+     * @param Response $resp
+     * @param $args
+     * @return erreur ou rien
+     */
     public function modifierItem(Request $req, Response $resp, $args){
         $item = Item::where( 'id', '=', $args["id"] )->first();
         $l = Liste::where( 'no', '=', $item["liste_id"] )->first();

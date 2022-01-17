@@ -18,11 +18,23 @@ abstract class Vue{
         $this->requete = $req; 
     }
 
-    public abstract function createContent() : string; 
+    /**
+     * fonction abstraite servant à définir comment afficher la vue
+     * @return string
+     */
+    public abstract function createContent() : string;
 
-    public abstract function linkCss() : string; 
-    
+    /**
+     * fonction abstraite permettant de relier un css custom à chaque vue
+     * @return string
+     */
+    public abstract function linkCss() : string;
 
+
+    /**
+     * Méthode permettant de compiler la vue vers un format affichable
+     * @return code HTML représentant la vue
+     */
     public function render(){ 
         $this->content = $this->createContent(); 
         $css = $this->linkCss(); 

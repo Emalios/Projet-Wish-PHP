@@ -22,8 +22,18 @@ class VueGestionListe extends Vue{
      
     private $estReserve; 
 
-    private $itemMessages; 
+    private $itemMessages;
 
+    /**
+     * constructeur par défault
+     * @param $list liste à gérer
+     * @param $items items de la liste
+     * @param $messages messages de la liste
+     * @param $estProprio booléen indiquant si la vue est affiché à quelqu'un étant le propriétaire de la liste
+     * @param $itemMessages
+     * @param $c
+     * @param $rq
+     */
     public function __construct($list, $items, $messages, $estProprio, $itemMessages,$c, $rq){
         parent::__construct("", $c, $rq);	
         if(!$list==null) {
