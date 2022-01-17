@@ -26,6 +26,7 @@ class VueCompte extends Vue{
                     <button type="submit">Enregistrer</button>
                 </div>
                 <a href="/mon-compte?query=participations">Voir mes participations</a>
+                <a href="/mon-compte?query=deconnexion">Se déconnecter</a>
                 <a href="/mon-compte?query=supprimer">Supprimer</a>
             </form>
         HTML;
