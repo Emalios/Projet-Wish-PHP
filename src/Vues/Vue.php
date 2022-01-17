@@ -39,19 +39,21 @@ abstract class Vue{
     public function render(){ 
         $this->content = $this->createContent(); 
         $links = $this->linkCss(); 
-
+        
         array_push($links,"elements/basic.css");
         array_push($links,"elements/text.css");
-
-        $css = loadCss::toHtml($links);
+        
+        $base = $this->requete->getUri()->getBasePath() ;
+        $css = $this->toHtml($links);
 
         $container = $this->container ;
-        $base = $this->requete->getUri()->getBasePath() ;
         $accueil =  $container->router->pathFor( 'accueil') ;
         $publique =  $container->router->pathFor( 'listes_publiques') ;
         $createurs = $container->router->pathFor( 'createurs') ;
 
-        $compte = (isset($_SESSION['login'])) ? "<a href='/mon-compte']>Mon compte</a>" : "<a href='/creer-compte']>Créer compte</a> <a href='/login']>Se connecter</a>";
+        $login = $container->router->pathFor('login'); 
+
+        $compte = (isset($_SESSION['login'])) ? "<a href='/mon-compte']>Mon compte</a>" : "<a href='/creer-compte']>Créer compte</a> <a href='$login']>Se connecter</a>";
         
         return <<<HTML
             <!DOCTYPE html> 
@@ -110,4 +112,15 @@ abstract class Vue{
 
         return $this;
     }   
+
+    public function toHtml(array $links): string {
+        $res = "";
+        $rootFile = $this->requete->getUri()->getBasePath() ;
+        if(count($links) > 0){
+            foreach($links as $liens){
+                $res .= "<link rel='stylesheet' href='$rootFile/css/$liens'/>";
+            }
+        }
+        return $res;
+    }
 }
