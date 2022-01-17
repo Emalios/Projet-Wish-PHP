@@ -33,7 +33,7 @@ class ControleurListe {
         $liste = Liste::where( 'token', '=', $args["token"] )->first();
 
         // Si on ne l'a pas trouvé alors on essaie de le trouver avec le token de participation
-        $estProprio = Compte::isOwner($liste->no, $_SESSION["userId"]);
+        $estProprio = Compte::isOwner($_SESSION["userId"], $liste->token);
     
         // On recupere alors la liste des items associes 
         $listeItems = Item::where( 'liste_id', '=', $liste["no"])->get();
