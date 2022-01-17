@@ -89,6 +89,11 @@ class ControleurCompte{
             header("/accueil"); 
             exit; 
         }
+        else if($req->getQueryParams()["query"] == "deconnexion"){
+            session_destroy();
+            header("/accueil"); 
+            exit; 
+        }
         else $vue = new Vues\VueCompte(Compte::where('login', '=', $_SESSION['login'] )->first(), $this->container, $req);
         $resp->getBody()->write($vue->render());
         return $resp;
