@@ -3,7 +3,6 @@
 namespace App\Vues; 
 
 use App\Vues\Vue as Vue; 
-use Style\loadCss;
 use App\Helpers\Elements as Elements; 
 
 
@@ -16,9 +15,9 @@ class VueModifierItem extends Vue{
         $this->item = $item;
     }
 
-    public function linkCss() : string{
+    public function linkCss() : array{
         $links = ['elements/formulaire.css', 'elements/inputs.css', 'elements/basic.css'];
-        return loadCss::toHtml($links);
+        return $links;
     }
 
     public function createContent() : string{

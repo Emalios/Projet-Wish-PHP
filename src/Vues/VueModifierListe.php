@@ -20,9 +20,9 @@ class VueModifierListe extends Vue{
         $this->items = $items;
     }
 
-    public function linkCss() : string{
+    public function linkCss() : array{
         $links = ['elements/formulaire.css', 'elements/inputs.css', 'elements/basic.css'];
-        return loadCss::toHtml($links);
+        return $links;
     }
 
     public function createContent() : string{

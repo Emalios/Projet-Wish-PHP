@@ -19,9 +19,9 @@ class VueItem extends Vue{
         $this->message = $message; 
     } 
 
-    public function linkCss() : string{
+    public function linkCss() : array{
         $links = ['pages/liste.css'];
-        return loadCss::toHtml($links);
+        return $links;
     }
 
     public function createContent() : string{ 

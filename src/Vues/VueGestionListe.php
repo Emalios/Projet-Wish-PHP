@@ -52,9 +52,9 @@ class VueGestionListe extends Vue{
     } 
 
     
-    public function linkCss() : string{
-        $links = ['pages/liste.css'];
-        return loadCss::toHtml($links);
+    public function linkCss() : array{
+        $links = ['pages/liste.css', 'pages/formulaire.css'];
+        return $links;
     }
     public function createContent() : string{ 
         // Si la liste n'existe pas on affiche un resultat par defaut
@@ -78,10 +78,12 @@ class VueGestionListe extends Vue{
         }
         
         if($this->estReserve) 
-            $etat = "Cette liste est entièrement réservée";
+            $etat = "Etat : cette liste est entièrement réservée";
         else 
-            $etat = "Cette liste n'est pas entièrement réservée";
+            $etat = "Etat : cette liste n'est pas entièrement réservée";
         
+        if(!$this->estProprietaire)
+            $etat = ""; 
         if(Compte::isConnected())
             $sendMessage = $this->getFormMessage($token); 
         else 
@@ -93,11 +95,12 @@ class VueGestionListe extends Vue{
             $ownerFunctions = ""; 
         
         $html = <<<HTML
-            <h1> Liste : $liste->titre </h1>
-            <p> $etat </p>
-            <p> $liste->description </p>
-            <p> Date d'expiration : $liste->expiration </p> 
+            <h1 class="center-title"> Liste : $liste->titre </h1>
             $ownerFunctions
+            <p> $etat </p>
+            <p> Description de la liste : $liste->description </p>
+            <p> Date d'expiration : $liste->expiration </p> 
+            <h3> La liste des items de la liste </h2>
             $listeItems
             $mess
             $sendMessage        
@@ -109,9 +112,9 @@ class VueGestionListe extends Vue{
         $token = $this->list->token;
         return <<<HTML
             <div>
-                <a href="">Ajouter un item</a>
-                <a href="/modifier-liste/$token">Modifier liste</a>
-                <a href="">Supprimer liste</a>
+                <a href="" class="add">Ajouter un item</a>
+                <a href="/modifier-liste/$token" class="add">Modifier liste</a>
+                <a href="" class="add">Supprimer liste</a>
             </div>
         HTML; 
     }
@@ -136,14 +139,17 @@ class VueGestionListe extends Vue{
             ($this->itemMessages == null || $this->itemMessages[$item->id]["message"] == null) ? $message = "" : $message = $this->itemMessages[$item->id]["message"];
             $etat = "Il est réservé par $item->nomReserveur  : " . $message;
         }
-        if(!$this->estProprietaire) $res = ""; 
+        $today = date("Y-m-d");      
+        if(!$this->estProprietaire || $this->list->expiration > $today) $etat = ""; 
         if(filter_var($item["img"], FILTER_VALIDATE_URL)) $src = $item["img"]; 
         else $src =  "/img/$item->img";
     
         ($item->cagnotte != "") ? $cagnotte = "Cagnotte pour l'item : $item->cagnotte" : $cagnotte = "";
     
         return <<<HTML
-            <p> <a href="/$tokenListe/item/$item->id">  $item->titreItem </a> $item->desc Cout = $item->tarif <p>
+            <p> <a href="/liste/$tokenListe/item/$item->id"> $item->nom </a> 
+            <p> $item->descr </p>
+            <p> Cout = $item->tarif € <p>
             <p> $etat </p>
             <p> $cagnotte </p>
             <img src="$src" . alt="Image de l'item"/>

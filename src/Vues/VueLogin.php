@@ -8,8 +8,8 @@ class VueLogin extends Vue{
         parent::__construct("", $c, $rq);	
     }
 
-    public function linkCss() : string{
-        return "";
+    public function linkCss() : array{
+        return [];
     }
     
     public function createContent() : string{

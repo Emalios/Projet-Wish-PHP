@@ -11,8 +11,8 @@ class VueListesPubliques extends Vue{
         $this->listes = $listes;
     }
 
-    public function linkCss() : string{
-        return "";
+    public function linkCss() : array{
+        return [];
     }
     
     public function createContent() : string{
@@ -21,6 +21,10 @@ class VueListesPubliques extends Vue{
             $path =  $this->container->router->pathFor( 'liste', ["token" => $liste->token]) ;
             $res .= "<p> " . $liste->titre . "</p><a href='$path'>Voir</a><br>";
         }
-        return $res;
+        return <<<HTML
+            <h1 class="subtitle"> Liste publiques </h1>
+            <h3 style="text-align: center;"> Vous pouvez voir ici les listes publiées publiquement.</h3>
+            $res
+        HTML;
     }
 }

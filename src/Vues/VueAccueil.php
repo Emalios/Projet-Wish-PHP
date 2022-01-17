@@ -8,17 +8,19 @@ class VueAccueil extends Vue{
         parent::__construct("", $c, $rq);
     }
 
-    public function linkCss() : string{
-        return "";
+    public function linkCss() : array{
+        return ["pages/accueil.css"];
     }
     
     public function createContent() : string{
         $titre = "Accueil";
         if(isset($_SESSION["login"])) $name = $_SESSION["login"];
         $html = <<<HTML
-            <h1> Wish liste </h1>
-            <a href="/liste/1"> Liste 1 </p>
-            <a href="/ajouter-liste"> Ajouter une liste </p>
+            <h1 class="title"> Wish liste </h1>
+            <div style="text-align:center;">
+                <img src="img/gift.png" alt="Image cadeau" style="width:390px;">
+            </div>
+            <h2> Bienvenue sur le site qui permet de créer des listes de souhaits ! </h2>
         HTML;
         return $html;
     }

@@ -11,8 +11,8 @@ class VueCreateurs extends Vue{
         $this->listesCreateurs = $listesCreateurs;
     }
 
-    public function linkCss() : string{
-        return "";
+    public function linkCss() : array{
+        return [];
     }
     
     public function createContent() : string{
