@@ -33,16 +33,8 @@ class ControleurListe {
         $liste = Liste::where( 'token', '=', $args["token"] )->first();
 
         // Si on ne l'a pas trouvé alors on essaie de le trouver avec le token de participation
-        if($liste == null){
-            $liste = Liste::where( 'tokenParticipation', '=', $args["id"] )->first();
-            // Dans ce cas ce n'est pas le proprietaire de la liste 
-            $estProprio = false; 
-        } else {
-            // Sinon on verifie que ce soit bien le proprietaire
-            $cookieName = 'propListe' . $liste["no"];
-            $estProprio = isset($_COOKIE[$cookieName]) && $_COOKIE[$cookieName] == $liste["token"];
-        }
-        
+        $estProprio = Compte::isOwner($liste->no, $_SESSION["userId"]);
+    
         // On recupere alors la liste des items associes 
         $listeItems = Item::where( 'liste_id', '=', $liste["no"])->get();
         
@@ -130,7 +122,7 @@ class ControleurListe {
             exit;
         }
         $listeItems = Item::where( 'liste_id', '=', $l["no"])->get();
-        if($req->getQueryParam()["supprimer"]){
+        if($req->getQueryParams()["supprimer"] != null){
             if($_GET['supprimer'] == 'all'){
                 $items = Item::where( 'liste_id', '=', $l->no)->get();
                 foreach ($items as $item) {
