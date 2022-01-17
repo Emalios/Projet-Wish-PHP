@@ -70,12 +70,12 @@ $app->post('/modifier-item/{id}', function (Request $req, Response $resp, $args)
    return $controleur->modifierItem($req, $resp, $args);
 })->setName("modifier-liste");
 
-$app->get('/{token}/item/{id}', function (Request $req, Response $resp, $args) {  
+$app->get('/liste/{token}/item/{id}', function (Request $req, Response $resp, $args) {  
    $controleur = new ControleurItem($this); 
    return $controleur->getItem($req, $resp, $args);
 })->setName("item");
 
-$app->post('/item/{id}', function (Request $req, Response $resp, $args) {  
+$app->post('/liste/{token}/item/{id}', function (Request $req, Response $resp, $args) {  
    $controleur = new ControleurItem($this); 
    return $controleur->getItem($req, $resp, $args);
 });
