@@ -52,7 +52,7 @@ class Compte extends \Illuminate\Database\Eloquent\Model {
 
     public static function isOwner($idUser, $listToken){
         if(!self::isConnected()) return false; 
-        $l = Liste::where('token', '=', $listToken); 
-        return $l->createur_id = $idUser; 
+        $l = Liste::where('token', '=', $listToken)->first(); 
+        return  $l->createur_id == $idUser; 
     }
 }
