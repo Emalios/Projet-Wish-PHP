@@ -42,6 +42,7 @@ class Compte extends \Illuminate\Database\Eloquent\Model {
         if($c == null && !password_verify($password, $c->password))
             return false; 
         $_SESSION['login'] = $c['login']; 
+        $_SESSION['userId'] = $c['id']; 
         return true; 
     }
 
@@ -50,6 +51,7 @@ class Compte extends \Illuminate\Database\Eloquent\Model {
     }
 
     public static function isOwner($idUser, $listToken){
+        if(!self::isConnected()) return false; 
         $l = Liste::where('token', '=', $listToken); 
         return $l->createur_id = $idUser; 
     }
