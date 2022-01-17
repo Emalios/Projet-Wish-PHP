@@ -22,7 +22,6 @@ body, html{
 
 body {
   margin: 0;
-  padding: 0;
 }
 
 header { /* on s'occupe du header : couleur, formes et marges... */
@@ -47,6 +46,7 @@ p{
 }
 
 .page-container {
+  padding : 10px;
   padding-bottom: 120px;
   margin-bottom: 20px;
 }
@@ -89,9 +89,10 @@ p{
 }
 
 .header-title{
+  white-space: pre;
   font-family:  Coolvetica, Arial;
   font-size: 2em;
-  padding-left: 20px;
+  padding-right: 20px;
   color:white;
 }
 
@@ -115,6 +116,9 @@ nav { /* la barre de navigation prend une partie du header */
   text-align: right;
 }
 
+h2 {
+  text-align: center;
+}
 
 nav a{ /* elements le déroulement des boites */
   display: block;
