@@ -50,8 +50,8 @@ abstract class Vue{
         $accueil =  $container->router->pathFor( 'accueil') ;
         $publique =  $container->router->pathFor( 'listes_publiques') ;
         $createurs = $container->router->pathFor( 'createurs') ;
-
-        $login = $container->router->pathFor('login'); 
+        $login = $container->router->pathFor( 'login');
+        $compte = $container->router->pathFor( 'creer_compte');
 
         $compte = (isset($_SESSION['login'])) ? "<a href='/mon-compte']>Mon compte</a>" : "<a href='/creer-compte']>Créer compte</a> <a href='$login']>Se connecter</a>";
         
@@ -76,6 +76,8 @@ abstract class Vue{
                                         <li><a href="$accueil">Accueil</a></li>
                                         <li><a href="$publique">Listes publiques</a></li>
                                         <li><a href="$createurs">Listes des créateurs publiques</a></li>
+                                        <li><a href="$compte">Créer compte</a></li>
+                                        <li><a href="$login">Se connecter</a></li>
                                         <li>$compte</li>
                                     </ul>
                                 </nav>
