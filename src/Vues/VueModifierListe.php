@@ -10,7 +10,7 @@ use App\Helpers\Elements as Elements;
 class VueModifierListe extends Vue{
 
 
-    private $liste; 
+    private $liste;
 
     private $items;
 
@@ -33,7 +33,7 @@ class VueModifierListe extends Vue{
         $date = Elements::dateDropDown($this->liste['expiration']); 
         $link = "/modifier-liste/" . $this->liste['token']; 
 
-        $items = ""; 
+        $items = "";
         $token = $this->liste["token"];
         foreach($this->items as $item){
             if($item["nomReserveur"] == null){
@@ -63,38 +63,13 @@ class VueModifierListe extends Vue{
                     <button type="submit" class="second-button">Modifier</button>
                 </div>
             </form>
-            <h1> Ajouter un item a la liste : </h1>
-            <form action=$link method="POST" class="center-right-form" enctype="multipart/form-data">
-                <div class="center-form-inside">
-                    <label for="nom" class="label-primary">Nom</label>
-                    <input type="text" class="text" placeholder="Entrez le nom de l'item" name="nom">
-                    <label for="nom" class="label-primary">Prix</label>
-                    <input type="number" class="text" placeholder="Entrez le prix de l'item" name="prix">
-                    <label for="desc" class="label-primary">Description</label>
-                    <textarea type="textarea" class="text" placeholder="Entrez une description" name="description">
-                    </textarea>
-                    <label for="cagnotte" class="label-primary">Souhaitez vous créer une cagnotte ? </label>
-                    <input type="checkbox" name="cagnotte">
-                    <label for="desc" class="label-primary">Url</label>
-                    <input type="text" class="text" placeholder="Entrez un url pour le produit" name="url">
-                    <label for="urlImage" class="label-primary">Url image</label>
-                    <input type="text" class="text" placeholder="Entrez un url pour le produit" name="urlImage">
-                    <label for="urlImage" class="label-primary">Url image</label>
-                    <div class="center-third-input">
-                        <p class="category">Ajoutez votre propre image: </p>
-                        <input type="file" name="photo" class="imgExpo">
-                    </div>
-                    
-                    <button type="submit" class="second-button">Ajouter item</button>
-                </div>
-            </form>
             $items
             $deleteAllImages
         HTML; 
         return $html;
     } 
 
-    public function notAccessible() : string{
+    /*public function notAccessible() : string{
         return "<h1> Vous ne pouvez pas modifier cette liste </h1>";
-    }
+    }*/
 }
