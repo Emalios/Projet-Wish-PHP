@@ -48,12 +48,14 @@ abstract class Vue{
 
         $container = $this->container ;
         $accueil =  $container->router->pathFor( 'accueil') ;
-        $publique =  $container->router->pathFor( 'listes_publiques') ;
+        $ajout =  $container->router->pathFor( 'ajouter-liste') ;
+        $publique =  $container->router->pathFor( 'listes-publiques') ;
         $createurs = $container->router->pathFor( 'createurs') ;
         $login = $container->router->pathFor( 'login');
-        $compte = $container->router->pathFor( 'creer_compte');
+        $inscription = $container->router->pathFor( 'creer-compte');
+        $monCompte = $container->router->pathFor( 'mon-compte');
 
-        $compte = (isset($_SESSION['login'])) ? "<a href='/mon-compte']>Mon compte</a>" : "<a href='/creer-compte']>Créer compte</a> <a href='$login']>Se connecter</a>";
+        $compte = (isset($_SESSION['login'])) ? "<a href='$monCompte'>Mon compte</a>" : "<a href='$inscription']>Créer compte</a> <li><a href='$login']>Se connecter</a></li>";
         
         return <<<HTML
             <!DOCTYPE html> 
@@ -74,10 +76,9 @@ abstract class Vue{
                                 <nav>
                                     <ul class="details">
                                         <li><a href="$accueil">Accueil</a></li>
+                                        <li><a href="$ajout">Ajouter liste</a></li>
                                         <li><a href="$publique">Listes publiques</a></li>
                                         <li><a href="$createurs">Listes des créateurs publiques</a></li>
-                                        <li><a href="$compte">Créer compte</a></li>
-                                        <li><a href="$login">Se connecter</a></li>
                                         <li>$compte</li>
                                     </ul>
                                 </nav>
