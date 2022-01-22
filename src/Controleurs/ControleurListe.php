@@ -32,9 +32,8 @@ class ControleurListe {
         // On recupere la liste avec le token du proprietaire 
         $liste = Liste::where( 'token', '=', $args["token"] )->first();
 
-        // Si on ne l'a pas trouvé alors on essaie de le trouver avec le token de participation
-        $estProprio = Compte::isOwner($_SESSION["userId"], $liste->token);
-    
+        $esProprio = Liste::isOwner($liste); 
+
         // On recupere alors la liste des items associes 
         $listeItems = Item::where( 'liste_id', '=', $liste["no"])->get();
         
@@ -46,20 +45,27 @@ class ControleurListe {
             $rm = new ListeMessage();
             $rm->message = $_POST['message'];
             $rm->liste_id = $liste["no"];
+            $rm->publieur_id = $_SESSION["userId"];
             $rm->save(); 
-            header("Location: /liste/" . $args["id"]);
+            header("Location: /liste/" . $args["token"]);
             exit; 
+        }
+
+        // On regarde s'il l'on a voulu partage la liste
+        if($req->getQueryParams()["partage"] != null){
+            $link = explode("?", $req->getUri())[0]; 
+            $messagePartage = "Pour partager la liste, il vous suffit de partager le lien suivant : <a href=\"$link\">$link</a>";
         }
         
         $messagesItems = []; 
         foreach($listeItems as $item){
             $itemMessage = ReservationMessage::where( 'item_id', '=', $item["id"])->first();
             if($itemMessage != null)
-            $messagesItems[$item->id] =  $itemMessage->commentaire;
+            $messagesItems["$item->id"] =  $itemMessage->commentaire;
         }
 
         // Rendu 
-        $vue = new Vues\VueGestionListe($liste, $listeItems, $messages, $estProprio, $messagesItems, $this->container, $req);
+        $vue = new Vues\VueGestionListe($liste, $listeItems, $messages, $estProprio, $messagesItems, $this->container, $req, $messagePartage);
         $resp->getBody()->write($vue->render());
         return $resp;
     }
@@ -73,26 +79,25 @@ class ControleurListe {
      */
     public function ajouterListe(Request $req, Response $resp, $args){
         //Si l'utilisateur n'est pas connecté, alors il ne peut pas créer de liste.
-        if(!isset($_SESSION['login'])) {
-            header('location: /accueil');
-            exit;
-        }
-        //S'il est connecté, il peut créer une liste
         if(isset($_POST['titre'])){
             $l = new Liste();
             $l->titre = $_POST['titre'];
             $l->description = $_POST['desc'];
             $l->token = bin2hex(openssl_random_pseudo_bytes(16)); 
-            $l->tokenParticipation = bin2hex(openssl_random_pseudo_bytes(16)); 
+            $l->tokenModification = bin2hex(openssl_random_pseudo_bytes(16)); 
             $l->publique = isset($_POST['publique']);
-            $c = Compte::where('login', '=', $_SESSION['login'])->first();
-            $l->createur_id = $c->id;
+            if(isset($_SESSION['login'])){
+                $c = Compte::where('login', '=', $_SESSION['login'])->first();
+                $l->createur_id = $c->id;
+            } else {
+                setcookie($l->token, $l->tokenModification, 2147483647, "/", "", true); 
+                $l->createur_id = 0; 
+            }
             $annee = $_POST['année']; 
             $mois = $_POST['mois']; 
             $jour = $_POST['jour'];	
             $l->expiration = $annee . "-" .  $mois . "-" . $jour;
             $l->save();
-            setcookie("propListe" . $l->no, $l->token, -1); 
             header("location: /ajouter-liste");
             exit;
         }   
@@ -109,20 +114,22 @@ class ControleurListe {
      * @return erreur ou rien
      */
     public function modifierListe(Request $req, Response $resp, $args){
-        //Si l'utilisateur n'est pas connecté, alors il ne peut pas modifier de liste.
-        if(!isset($_SESSION['login'])) {
-            header('location: /accueil');
-            exit;
-        }
+        // Si l'utilisateur n'est pas connecté, alors il ne peut pas modifier de liste.
         $l = Liste::where( 'token', '=', $args["id"] )->first();
-        $c = Compte::where('login', '=', $_SESSION['login'])->first();
-        //Pour modifier une liste, l'utilisateur doit avoir créer la liste
-        if($l->createur_id != $c->id) {
-            header('location: /accueil');
-            exit;
+
+        // On vérifie que l'utilisateur soit le proprietaire de la liste 
+        if(!Liste::isOwner($l)) {
+            $redirection = $this->container->router->pathFor('liste', ["token" => $l->token]); 
+            header("Location: $redirection");
+            exit; 
         }
+
+        // On recupere la liste des items 
         $listeItems = Item::where( 'liste_id', '=', $l["no"])->get();
+
+        // Si l'utilisateur a voulu supprimer au moins un item
         if($req->getQueryParams()["supprimer"] != null){
+            // On regarde s'il a voulu tous les supprimer
             if($_GET['supprimer'] == 'all'){
                 $items = Item::where( 'liste_id', '=', $l->no)->get();
                 foreach ($items as $item) {
@@ -131,35 +138,24 @@ class ControleurListe {
                 }
             } else {
                 $item = Item::where( 'id', '=', $_GET['supprimer'])->first();
-                $item->delete();
+                if($item->nomReserveur == null)
+                    $item->delete();
             }
+            $redirection = $this->container->router->pathFor('modifier-liste', ["id" => $l->token]); 
             header("location: /modifier-liste/" . $l->token);
             exit; 
         }
-        if(isset($_POST['nom'])){
-            $maxId = Item::max('id'); 
-            $item = new Item();
-            $item->liste_id = $l->no; 
-            $item->nom = $_POST['nom'];
-            $item->descr = $_POST['description']; 
-            $item->tarif = $_POST['prix'];	  
-            $item->url = $_POST['url'];
-            if(static::checkImg()) {
-                $link = static::getValidLink($_FILES['photo']['name']);
-                copy($_FILES['photo']['tmp_name'], "img/" . ($maxId+1) . $link);
-                $item->img = ($maxId+1) . $link;
-            }
-            else $item->img = $_POST['urlImage'];
-            if($_POST["cagnotte"] == "on") $item->cagnotte = 0;
-            $item->save(); 
-     //       header("location: /modifier-liste/" . $l->token);
-       //     exit; 
-        }
-        else if(isset($_POST['titre'])){
-            $l->titre = $_POST['titre'];
-            $l->description = $_POST['desc'];
+
+        // Si l'utilisateur a essaye de modifier la liste
+        if($req->getParsedBody() != null){
+            $l->titre = $req->getParsedBody()['titre'];
+            $l->description = $req->getParsedBody()['desc'];
+
+            // On active ou non la liste publique
             if($_POST["publique"] == "on") $l->publique = 1;
             else $l->publique = 0;
+
+            // On change eventuellement la date
             $annee = $_POST['année']; 
             $mois = $_POST['mois']; 
             $jour = $_POST['jour'];	
