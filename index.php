@@ -60,15 +60,15 @@ $app->post('/modifier-liste/{id}', function (Request $req, Response $resp, $args
    return $controleur->modifierListe($req, $resp, $args);
 })->setName("modifier-liste");
 
-$app->get('/modifier-item/{id}', function (Request $req, Response $resp, $args) {  
+$app->get('/liste/{token}/modifier-item/{id}', function (Request $req, Response $resp, $args) {  
     $controleur = new ControleurItem($this); 
     return $controleur->modifierItem($req, $resp, $args);
 })->setName("modifier-item");
 
-$app->post('/modifier-item/{id}', function (Request $req, Response $resp, $args) {
+$app->post('/liste/{token}/modifier-item/{id}', function (Request $req, Response $resp, $args) {
    $controleur = new ControleurItem($this); 
    return $controleur->modifierItem($req, $resp, $args);
-})->setName("modifier-liste");
+})->setName("modifier-item");
 
 $app->get('/liste/{token}/item/{id}', function (Request $req, Response $resp, $args) {  
    $controleur = new ControleurItem($this); 
@@ -118,10 +118,20 @@ $app->post('/modifier-compte', function (Request $req, Response $resp, $args) {
    return $controleur->modifierCompte($req, $resp, $args);
 });
 
+$app->get('/liste/{token}/ajouter-item', function (Request $req, Response $resp, $args) {  
+   $controleur = new ControleurItem($this); 
+   return $controleur->ajouterItem($req, $resp, $args);
+})->setName("ajouter-item");
+
+$app->post('/liste/{token}/ajouter-item', function (Request $req, Response $resp, $args) {  
+   $controleur = new ControleurItem($this); 
+   return $controleur->ajouterItem($req, $resp, $args);
+})->setName("ajouter-item");
+
 $app->get('/listes-publiques', function (Request $req, Response $resp, $args) {  
    $controleur = new ControleurListe($this); 
    return $controleur->afficherListesPubliques($req, $resp, $args);
-})->setName("listes_publiques");
+})->setName("listes-publiques");
 
 $app->get('/listes-createurs', function (Request $req, Response $resp, $args) {  
    $controleur = new ControleurCompte($this); 
