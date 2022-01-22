@@ -31,19 +31,21 @@ class VueModifierListe extends Vue{
         $titre = $this->liste["titre"]; 
         $description = $this->liste["description"];
         $date = Elements::dateDropDown($this->liste['expiration']); 
-        $link = "/modifier-liste/" . $this->liste['token']; 
-
+        $link = $this->container->router->pathFor('modifier-liste', ["token"=> $this->liste['token']); 
         $items = "";
         $token = $this->liste["token"];
         foreach($this->items as $item){
             if($item["nomReserveur"] == null){
                 $nom = $item['nom'];   
                 $id = $item['id']; 
-                $items .= "<a href='/modifier-item/$id'>$nom </a><a href='/modifier-liste/$token?supprimer=$id'>supprimer</a><br>";
+                $pathModifierItem = $this->container->router->pathFor('modifier-item', ["token"=> $this->liste['token'], "id" => $id); 
+                $pathSupprimerItem = $this->container->router->pathFor('modifier-liste', ["token"=> $this->liste['token']); 
+                $items .= "<a href='$pathModifierItem'>$nom </a><a href='$pathSupprimerItem?supprimer=$id'>supprimer</a><br>";
             }
         }
 
-        $deleteAllImages = "<a href='/modifier-liste/$token?supprimer=all'>supprimer toutes les images</a><br>";
+        $pathSupprimerImages = $this->container->router->pathFor('modifier-liste', ["token"=> $this->liste['token']); 
+        $deleteAllImages = "<a href='$pathSupprimerImages?supprimer=all'>supprimer toutes les images</a><br>";
 
         echo($this->liste->publique);
         $valuePublique = ($this->liste->publique == 1) ? "checked" : ""; 

@@ -20,10 +20,11 @@ class VueCreationCompte extends Vue{
     }
 
     public function createContent() : string{ 
+        $path = $this->container->router->pathFor('creer-compte'); 
         $html = <<<HTML
             <p> $this->messageErreur </p>
             <h1> Ajouter un compte : </h1>
-            <form action="/creer-compte" method="POST" class="center-right-form">
+            <form action="$path" method="POST" class="center-right-form">
                 <div class="center-form-inside">
                     <label for="titre" class="label-primary">Email</label>
                     <input type="email  " class="text" value="" placeholder="Entrez vortre email" name="email">

@@ -18,9 +18,10 @@ class VueAjoutListe extends Vue{
 
     public function createContent() : string{ 
         $date = Elements::dateDropDown(); 
+        $path = $this->container->router->pathFor('ajouter-liste'); 
         $html = <<<HTML
             <h1> Ajouter une liste : </h1>
-            <form action="/ajouter-liste" method="POST" class="center-right-form">
+            <form action="$path" method="POST" class="center-right-form">
                 <div class="center-form-inside">
                     <label for="titre" class="label-primary">Titre</label>
                     <input type="text" class="text" value="" placeholder="Entrez un titre" name="titre">

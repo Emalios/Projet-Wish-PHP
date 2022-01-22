@@ -32,7 +32,7 @@ class ControleurListe {
         // On recupere la liste avec le token du proprietaire 
         $liste = Liste::where( 'token', '=', $args["token"] )->first();
 
-        $esProprio = Liste::isOwner($liste); 
+        $estProprio = Liste::isOwner($liste); 
 
         // On recupere alors la liste des items associes 
         $listeItems = Item::where( 'liste_id', '=', $liste["no"])->get();
@@ -41,18 +41,19 @@ class ControleurListe {
         $messages = ListeMessage::where( 'liste_id', '=', $liste["no"])->get();
         
         // On regarde si un message a ete poste 
-        if($req->getParsedBody()['message'] != null){
+        if($req->getParsedBody() != null){
             $rm = new ListeMessage();
             $rm->message = $req->getParsedBody()['message'];
             $rm->liste_id = $liste["no"];
             $rm->publieur_id = $_SESSION["userId"];
             $rm->save(); 
-            header("Location: " . $this->container->router->pathFor('liste', ["token"] => $args["token"]));
+            header("Location: " . $this->container->router->pathFor('liste', ["token" => $args["token"]]));
             exit; 
         }
 
         // On regarde s'il l'on a voulu partage la liste
-        if($req->getQueryParams()["partage"] != null){
+        $messagePartage = "";
+        if($req->getQueryParams() != null){
             $link = explode("?", $req->getUri())[0]; 
             $messagePartage = "Pour partager la liste, il vous suffit de partager le lien suivant : <a href=\"$link\">$link</a>";
         }
@@ -161,7 +162,7 @@ class ControleurListe {
             $jour = $_POST['jour'];	
             $l->expiration = $annee . "-" .  $mois . "-" . $jour;
             $l->save();
-            header("location: " .  $this->container->router->pathFor('liste', ["token" => $l->token]); );
+            header("location: " .  $this->container->router->pathFor('liste', ["token" => $l->token])); 
             exit; 
         }   
         $vue = new Vues\VueModifierListe($l, $listeItems, $this->container, $req);

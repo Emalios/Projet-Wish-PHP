@@ -19,7 +19,7 @@ class VueCreateurs extends Vue{
     public function createContent() : string{
         $res = ""; 
         foreach($this->listesCreateurs as $createur){
-            if($createur->login != "")
+            if($createur != null)
                 $res .= "<p> - " . $createur->login .  "</p>";
         }
         return <<<HTML
