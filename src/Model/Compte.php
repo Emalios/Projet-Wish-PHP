@@ -50,9 +50,4 @@ class Compte extends \Illuminate\Database\Eloquent\Model {
         return isset($_SESSION["login"]);
     }
 
-    public static function isOwner($idUser, $listToken){
-        if(!self::isConnected()) return false; 
-        $l = Liste::where('token', '=', $listToken)->first(); 
-        return  $l->createur_id == $idUser; 
-    }
 }
