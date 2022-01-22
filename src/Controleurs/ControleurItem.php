@@ -51,7 +51,7 @@ class ControleurItem {
         if($req->getParsedBody()['nomReserveur'] != null){
             $item["nomReserveur"] = $req->getParsedBody()["nomReserveur"];
             $item->save();
-            if($req->getParsedBody()['message']) != null){
+            if($req->getParsedBody()['message'] != null){
                 $m = new ReservationMessage();
                 $m->commentaire = $req->getParsedBody()['message'];
                 $m->item_id = $args["id"];
