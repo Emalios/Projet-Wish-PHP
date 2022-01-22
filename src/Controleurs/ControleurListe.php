@@ -32,7 +32,7 @@ class ControleurListe {
         // On recupere la liste avec le token du proprietaire 
         $liste = Liste::where( 'token', '=', $args["token"] )->first();
 
-        $esProprio = Liste::isOwner($liste); 
+        $estProprio = Liste::isOwner($liste);
 
         // On recupere alors la liste des items associes 
         $listeItems = Item::where( 'liste_id', '=', $liste["no"])->get();
@@ -47,7 +47,7 @@ class ControleurListe {
             $rm->liste_id = $liste["no"];
             $rm->publieur_id = $_SESSION["userId"];
             $rm->save(); 
-            header("Location: " . $this->container->router->pathFor('liste', ["token"] => $args["token"]));
+            header("Location: " . $this->container->router->pathFor('liste', ["token" => $args["token"]]));
             exit; 
         }
 
@@ -119,7 +119,7 @@ class ControleurListe {
 
         // On vérifie que l'utilisateur soit le proprietaire de la liste 
         if(!Liste::isOwner($l)) {
-            $redirection = $this->container->router->pathFor('liste', ["token" => $l->token]); 
+            $redirection = $this->container->router->pathFor('liste', ["token" => $l->token]);
             header("Location: $redirection");
             exit; 
         }
@@ -161,7 +161,7 @@ class ControleurListe {
             $jour = $_POST['jour'];	
             $l->expiration = $annee . "-" .  $mois . "-" . $jour;
             $l->save();
-            header("location: " .  $this->container->router->pathFor('liste', ["token" => $l->token]); );
+            header("location: " .  $this->container->router->pathFor('liste', ["token" => $l->token]));
             exit; 
         }   
         $vue = new Vues\VueModifierListe($l, $listeItems, $this->container, $req);
