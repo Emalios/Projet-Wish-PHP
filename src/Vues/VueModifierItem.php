@@ -21,33 +21,30 @@ class VueModifierItem extends Vue{
     }
 
     public function createContent() : string{
-     //   $cookieName = "propListe" . $this->item["liste_id"]; 
-       // if(!isset($_COOKIE[$cookieName])) return $this->notAccessible(); 
-        $nom = $this->item["nom"] ; 
-        $prix = '"' . $this->item["tarif"] . '"'; 
-        $url = '"' . $this->item["url"] . '"'; 
-        $urlImg = '"' . $this->item["img"] . '"'; 
-        $description = $this->item["descr"];
-        $link = "/modifier-item/" . $this->item['id']; 
+        $item = $this->item ; 
+        $link = $this->requete->getUri()->getPath(); 
+
+        ($item->img == "") ? $suppression = "" : $suppression = '<a href="$link?supprimer=image"> Supprimer l\'image de l\'item </a>';
 
         $html = <<<HTML
             <h1> Modifier un item a la liste : </h1>
             <form action=$link method="POST" class="center-right-form">
                 <div class="center-form-inside">
                     <label for="nom" class="label-primary">Nom</label>
-                    <input type="text" class="text" placeholder="Entrez le nom de l'item" name="nom" value="{$nom}">
+                    <input type="text" class="text" placeholder="Entrez le nom de l'item" name="nom" value="$item->nom">
                     <label for="nom" class="label-primary">Prix</label>
-                    <input type="number" class="text" placeholder="Entrez le prix de l'item" name="prix" value=$prix>
+                    <input type="number" class="text" placeholder="Entrez le prix de l'item" name="prix" value="$item->tarif">
                     <label for="desc" class="label-primary">Description</label>
-                    <textarea type="textarea" class="text" placeholder="Entrez une description" name="description">$description
+                    <textarea type="textarea" class="text" placeholder="Entrez une description" name="description">$item->descr
                     </textarea>
                     <label for="url" class="label-primary">Url</label>
-                    <input type="text" class="text" placeholder="Entrez un url pour le produit" name="url" value=$url>
+                    <input type="text" class="text" placeholder="Entrez un url pour le produit" name="url" value="$item->url">
                     <label for="urlImage" class="label-primary">Url image</label>
-                    <input type="text" class="text" placeholder="Entrez un url pour le produit" name="urlImage" value=$urlImg>
+                    <input type="text" class="text" placeholder="Entrez un url pour le produit" name="urlImage" value="$item->img">
                     <button type="submit" class="second-button">Modifier item</button>
                 </div>
             </form>
+            $suppression
         HTML; 
         return $html;
     } 

@@ -4,6 +4,7 @@ namespace App\Vues;
 
 use App\Model\Liste as Liste; 
 use App\Model\Item as Item; 
+use App\Model\Compte as Compte; 
 use App\Vues\Vue; 
 use Style\loadCss;
 
@@ -20,19 +21,32 @@ class VueItem extends Vue{
     } 
 
     public function linkCss() : array{
-        $links = ['pages/liste.css'];
+        $links = ['pages/item.css', 'elements/formulaire.css', 'pages/envoyer.css'];
         return $links;
     }
 
     public function createContent() : string{ 
-        if($this->item["liste_id"] == 0) return $this->notFound(); 
-        $titre = $this->item["nom"];
-        $src = "'/img/" . $this->item["img"] . "'";
+        // On recupere l'item
+        $item = $this->item;
+
+        // S'il n'est pas associe a une liste 
+        if($item["liste_id"] == 0) 
+            return $this->notFound(); 
+
+        // La racine du projet
+        $rootFile = $this->requete->getUri()->getBasePath();
+
+        // On affiche le reseveur et son message s'ils existent, un formulaire sinon
         ($this->message != null) ? $message = $this->message->commentaire : $message = ""; 
-        ($this->item["nomReserveur"] == null) ? $form = $this->createForm() : $form = "Réservé par " . $this->item["nomReserveur"]; 
+        ($item["nomReserveur"] == null) ? $form = $this->createForm() : $form = "Réservé par $item->nomReserveur"; 
+
         $html = <<<HTML
-            <h1> $titre </h1>
-            <img src=$src alt="Image">
+            <h1> $item->nom </h1>
+            <h3> $item->descr </h3>
+            <a href="//$item->url"> $item->url </a>
+            <p> Tarif : $item->tarif €
+            <br>
+            <img src='$rootFile/img/$item->img' alt="Image">
             $form
             <br />
             $message
@@ -49,46 +63,54 @@ class VueItem extends Vue{
      * @return string
      */
     public function createForm() : string{
+        // On recupere l'item
         $item = $this->item;
-        $link = "'/item/$item->id'";
+        if(intval($item->cagnotte) >= $item->tarif) return "Item reservé par cagnotte";
+
+        // Le lien de la page pour le formulaire
+        $link = $this->requete->getUri()->getPath();
+
+        // On s'occupe d'afficher une cagnotte si l'item en possede une 
         $formCagnotte = ""; 
-        if($this->item->cagnotte != ""){
-            $tarif = $this->item->tarif; 
-            $cagnotte = $this->item->cagnotte;
-            $max = '"' . $tarif - $cagnotte . '"';
-            $middle =  '"' . (($tarif - $cagnotte)/2) . '"';
+        if($item->cagnotte != "" && Compte::isConnected()){
+            $max = $item->tarif - $item->cagnotte;
+            $middle =  $max /2;
+            $basePath = $this->requete->getUri()->getBasePath(); 
             $formCagnotte = <<<HTML
-                <form action=$link method="post">
-                    <label for="titre" class="label-primary">Donner pour remplir la cagnotte</label>
-                    <p>Cagnotte actuelle : $cagnotte</p>
-                    <p>1</p>
-                    <input type="range" min="1" max=$max value=$middle class="slider" id="myRange" name="valeurCagnotte">
-                    <p> $max </p>
-                    <button type="submit">Enregistrer</button>
-                </form> 
+                <div class="message">
+                    <h1>Donner pour remplir la cagnotte</h1>
+                    <h2>Cagnotte actuelle : $item->cagnotte €</h2>
+                    <form action=$link method="post">
+                        <div class="donation">
+                            <input type="range" min="1" max="$max" value="$middle" class="slider" id="myRange" name="valeurCagnotte">
+                            <p id="donation"></p>
+                            <button type="submit" class="second-button">Participer</button>
+                        </div>
+                    </form> 
+                </div>
+                <script type="text/javascript" src="$basePath/css/pages/cagnotte.js"> 
+                </script>
             HTML; 
         }
-        (!isset($_COOKIE["username"])) ? $value = "\"\"" : $value = '"' . $_COOKIE["username"] . '"'; 
-        $html = <<<HTML
-        <form action=$link method="POST" class="center-right-form">
-            <label for="titre" class="label-primary">Nom</label>
-            <input type="text" class="text" value=$value placeholder="Entrez un titre" name="nomReserveur">
-            <label for="titre" class="label-primary">Message</label>
-            <textarea class="text" name="message"></textarea>
-            <button type="submit" class="second-button">Enregistrer</button>
-        </form>
-        $formCagnotte
-        <script type="text/javascript">
-            var slider = document.getElementById("myRange");
-            var output = document.getElementById("demo");
-            output.innerHTML = slider.value; // Display the default slider value
 
-            // Update the current slider value (each time you drag the slider handle)
-            slider.oninput = function() {
-                output.innerHTML = this.value + "€";
-            } 
-        </script>
-    HTML; 
+        (!isset($_COOKIE["username"])) ? $value = "" : $value = $_COOKIE["username"]; 
+        $value = $_SESSION['login'] ?? $value; 
+
+        $html = <<<HTML
+            <div class="message">
+                <form action="$link" method="POST" class="center-right-form">
+                    <div class="send-message">
+                        <h1> Reserver l'item </h1>
+                        <label for="titre" class="label-primary">Nom</label>
+                        <input type="text" class="text" value="$value" placeholder="Entrez un titre" name="nomReserveur">
+                        <label for="titre" class="label-primary">Message</label>
+                        <textarea class="text" name="message"></textarea>
+                        <button type="submit" class="second-button">Enregistrer</button>
+                    </div>
+                </form>
+            </div>
+            $formCagnotte
+        HTML; 
         return $html;
     }
 }

@@ -12,14 +12,21 @@ class VueCreateurs extends Vue{
     }
 
     public function linkCss() : array{
-        return [];
+        $links = ['pages/liste.css', 'elements/formulaire.css', 'elements/inputs.css'];
+        return $links;
     }
     
     public function createContent() : string{
         $res = ""; 
         foreach($this->listesCreateurs as $createur){
-            $res .= "<p>" . $createur->login .  "</p>";
+            if($createur->login != "")
+                $res .= "<p> - " . $createur->login .  "</p>";
         }
-        return $res;
+        return <<<HTML
+            <h1> Listes des créateurs de listes publiques </h1>
+            <h3 style="text-align: center;"> Vous voyez ici le login de chaque utilisateurs ayant créé une liste publique </h3>
+            <br>
+            $res
+        HTML;
     }
 }
