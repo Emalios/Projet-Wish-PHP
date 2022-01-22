@@ -28,7 +28,7 @@ class VueCompte extends Vue{
                 $content = $this->getParticipations(); 
                 break;
             case "joindre":
-                $content = $this->getParticipations(); 
+                $content = $this->joindreListe(); 
                 break;
         }
         $html = <<<HTML
@@ -50,7 +50,7 @@ class VueCompte extends Vue{
     }
 
     private function formPassword(){
-        $login =  $_SESSION["login"];
+        $login = $_SESSION["login"];
         return <<<HTML
                 <h2 class="second-subtitle"> $login </h1>
                 <form action="/modifier-compte" method="POST" class="center-right-form">

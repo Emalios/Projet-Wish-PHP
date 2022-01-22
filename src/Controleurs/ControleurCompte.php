@@ -18,8 +18,6 @@ class ControleurCompte{
         $this->container = $c;
     }
 
-
-
     /**
      * Methode permettant de creer un compte sur le site 
      * Cette méthode affiche une page d'inscription si l'utilisateur n'a rien rentre 
@@ -33,7 +31,7 @@ class ControleurCompte{
             if(is_string($res)) 
                 $messageErreur = $res;
             else {
-                header('location: /login');
+                header('location: ' . $this->container->router->pathFor('login'));
                 exit;
             }
         }
@@ -50,7 +48,7 @@ class ControleurCompte{
      */
     public function seConnecter(Request $req, Response $resp, $args){
         if(isset($_SESSION['login'])) {
-            header('location: /accueil'); 
+            header('location: ' . $this->container->router->pathFor('accueil')); 
             exit;
         }
         if($req->getParsedBody() != null) {
@@ -58,7 +56,7 @@ class ControleurCompte{
             $password = $req->getParsedBody()['mdp']; 
             $res = Compte::seConnecter($email, $password); 
             if($res) {
-                header('location: /accueil'); 
+                header('location: ' . $this->container->router->pathFor('accueil')); 
                 exit;
             }  
         }
@@ -75,7 +73,10 @@ class ControleurCompte{
      * @return Response|void
      */
     public function gestionCompte(Request $req, Response $resp, $args){
-        if($req->getQueryParams()["query"] == "participations"){
+        if($req->getQueryParams() == null){
+            $vue = new Vues\VueCompte(Compte::where('login', '=', $_SESSION['login'] )->first(), $this->container, $req);
+        }
+        else if($req->getQueryParams()["query"] == "participations"){
             $participations = ListeCompte::where("idCompte", "=", $_SESSION['userId'])->get(); 
             $listes = new \ArrayObject(array(), \ArrayObject::STD_PROP_LIST);
             foreach($participations as $participation){
@@ -94,7 +95,11 @@ class ControleurCompte{
             header("/accueil"); 
             exit; 
         }
-        else $vue = new Vues\VueCompte(Compte::where('login', '=', $_SESSION['login'] )->first(), $this->container, $req);
+        else if($req->getQueryParams()["query"] == "joindre"){
+            session_destroy();
+            header("/accueil"); 
+            exit; 
+        }
         $resp->getBody()->write($vue->render());
         return $resp;
     }
@@ -107,13 +112,12 @@ class ControleurCompte{
      * @return Response|void
      */
     public function modifierCompte(Request $req, Response $resp, $args){
-        echo($_SESSION['login']);
         $c = Compte::where( 'login', '=', $_SESSION['login'] )->first();
-        if(isset($_POST['mdp'])) {
+        if($req->getParsedBody() != null) {
             $c->password = password_hash($_POST['mdp'], PASSWORD_DEFAULT, ['cost' => 12]);
             $c->save();
             session_destroy();
-            header('location: /login');
+            header('location: ' .  $this->container->router->pathFor('login'));
             exit;
         }
         $vue = new Vues\VueCompte($c, $this->container, $req);
