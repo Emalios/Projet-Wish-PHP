@@ -138,6 +138,13 @@ $app->get('/listes-createurs', function (Request $req, Response $resp, $args) {
    return $controleur->afficherListeCreateurs($req, $resp, $args);
 })->setName("createurs");
 
-
+$app->get('/supprimer-compte', function (Request $req, Response $resp, $args){
+    $controleur = new ControleurCompte($this);
+    return $controleur->supprimerCompte($req, $resp, $args);
+})->setName("supprimer-compte");
+$app->post('/supprimer-compte', function (Request $req, Response $resp, $args){
+    $controleur = new ControleurCompte($this);
+    return $controleur->supprimerCompte($req, $resp, $args);
+});
 
 $app->run();
