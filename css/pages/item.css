@@ -1,0 +1,12 @@
+img{
+    min-width: 100px;
+    max-width: 400px;
+    min-height: 100px;
+    max-height: 400px;
+    margin: auto;
+}
+
+.page-container{
+    margin-left: 7%;
+    margin-right: 7%;
+}

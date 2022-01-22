@@ -1,0 +1,70 @@
+h1, h2 {
+    text-align: center;
+}
+
+.message {
+    background-color: #E9EBF8;
+    width: 100%;
+    margin: auto;
+    margin-top: 1%;
+    padding: 2%;
+    padding-bottom:2%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 5px;
+}
+
+.send-message{
+    display: flex;
+    flex-direction: column;
+}
+
+input, button, textarea{
+    margin: 10px;
+}
+
+input, textarea{
+    border: 1px solid #2b323d;
+    box-sizing: border-box;
+    border-radius: 20px;
+    color:#2b323d;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+button{
+    width: 20%;
+    height: 10%;
+    padding: 5;
+    margin: auto;
+}
+
+.donation{
+    width: 30%;
+    margin: auto;
+}
+
+#myRange, #donation, .donation > button{
+    width: 100%;
+    text-align:center;
+}
+  
+
+.tuto{
+    width: 90%;
+    margin:auto;
+    margin-top:2%;
+    padding: 20px;
+    background-color: #E9EBF8;
+}
+
+
+@media all and (max-width: 800px){
+
+    .tuto {
+        width: 90%;
+        margin: auto;
+        margin-top: 20px;
+        padding: 10px;
+    }
+}
