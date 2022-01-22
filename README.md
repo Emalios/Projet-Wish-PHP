@@ -1,17 +1,30 @@
 # Projet-Wish-PHP
 
 ## Lien sur webetu
+https://webetu.iutnc.univ-lorraine.fr/www/cappelli6u/mywishlist/accueil
 
 ## Membres de l'équipe
+Bergerat Hugo 
+Cappellina Arthur
+Condenseau Tom
+Marzouk Abdek
 
 ## Niveau de réalisation
+3 - toutes les fonctionnalités sont implémentées 
 
-## Compte créateur de liste
+## Compte créateur 
+Nous avons un seul type de compte permettant d'être à la fois créateur et participant. On pars simplement du principe qu'un créateur
+de liste peut participer a des listes sans avoir a recréer un compte. De même, un participant qui possède un compte ne doit pas recréer un compte
+pour créer une liste. Cependant, nous avons bien vérifier qu'un compte créateur ne puisse pas participer à sa liste. 
 
-## Compte participant 
+L'adresse mail du compte : emailDeTest@gmail.com
+Login : Professeur
+Mot de passe : MotDePasse6
+
 
 ## Tableau de bord
 
-Qui à fait quoi
-
-membres -> fonctionnalités
+Bergerat Hugo : 25 27
+Cappellina Arthur : De 1 à 13, de 15 à 24 et la 26
+Condenseau Tom : /
+Marzouk Abdek : 14 28
