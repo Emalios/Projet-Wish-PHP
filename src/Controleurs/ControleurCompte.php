@@ -76,13 +76,13 @@ class ControleurCompte{
      */
     public function gestionCompte(Request $req, Response $resp, $args){
         if($req->getQueryParams()["query"] == "participations"){
-            $participations = ListeCompte::where("loginCompte", "=", $_SESSION['login'])->get(); 
+            $participations = ListeCompte::where("idCompte", "=", $_SESSION['userId'])->get(); 
             $listes = new \ArrayObject(array(), \ArrayObject::STD_PROP_LIST);
             foreach($participations as $participation){
                 $liste = Liste::where("no", "=", $participation->idListe)->first(); 
                 $listes[] = $liste;
             }
-            $vue = new Vues\VueCompteParticipation(Compte::where('login', '=', $_SESSION['login'] )->first(), $listes, $participations, $this->container, $req);
+            $vue = new Vues\VueCompte(Compte::where('login', '=', $_SESSION['login'] )->first(), $this->container, $req, "participation");
         }
         else if($req->getQueryParams()["query"] == "supprimer"){
             $c = Compte::where("login", "=", $_SESSION["login"])->delete();
