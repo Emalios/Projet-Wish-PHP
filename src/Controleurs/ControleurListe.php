@@ -41,13 +41,13 @@ class ControleurListe {
         $messages = ListeMessage::where( 'liste_id', '=', $liste["no"])->get();
         
         // On regarde si un message a ete poste 
-        if(isset($_POST['message'])){
+        if($req->getParsedBody()['message'] != null){
             $rm = new ListeMessage();
-            $rm->message = $_POST['message'];
+            $rm->message = $req->getParsedBody()['message'];
             $rm->liste_id = $liste["no"];
             $rm->publieur_id = $_SESSION["userId"];
             $rm->save(); 
-            header("Location: /liste/" . $args["token"]);
+            header("Location: " . $this->container->router->pathFor('liste', ["token"] => $args["token"]));
             exit; 
         }
 
@@ -79,13 +79,13 @@ class ControleurListe {
      */
     public function ajouterListe(Request $req, Response $resp, $args){
         //Si l'utilisateur n'est pas connecté, alors il ne peut pas créer de liste.
-        if(isset($_POST['titre'])){
+        if($req->getParsedBody() != null){
             $l = new Liste();
-            $l->titre = $_POST['titre'];
-            $l->description = $_POST['desc'];
+            $l->titre = $req->getParsedBody()['titre'];
+            $l->description = $req->getParsedBody()['desc'];
             $l->token = bin2hex(openssl_random_pseudo_bytes(16)); 
             $l->tokenModification = bin2hex(openssl_random_pseudo_bytes(16)); 
-            $l->publique = isset($_POST['publique']);
+            $l->publique = isset($req->getParsedBody()['publique']);
             if(isset($_SESSION['login'])){
                 $c = Compte::where('login', '=', $_SESSION['login'])->first();
                 $l->createur_id = $c->id;
@@ -93,12 +93,12 @@ class ControleurListe {
                 setcookie($l->token, $l->tokenModification, 2147483647, "/", "", true); 
                 $l->createur_id = 0; 
             }
-            $annee = $_POST['année']; 
-            $mois = $_POST['mois']; 
-            $jour = $_POST['jour'];	
+            $annee = $req->getParsedBody()['année']; 
+            $mois = $req->getParsedBody()['mois']; 
+            $jour = $req->getParsedBody()['jour'];	
             $l->expiration = $annee . "-" .  $mois . "-" . $jour;
             $l->save();
-            header("location: /ajouter-liste");
+            header("location: " . $this->container->router->pathFor('ajouter-liste'));
             exit;
         }   
         $vue = new Vues\VueAjoutListe($this->container, $req);
@@ -142,7 +142,7 @@ class ControleurListe {
                     $item->delete();
             }
             $redirection = $this->container->router->pathFor('modifier-liste', ["id" => $l->token]); 
-            header("location: /modifier-liste/" . $l->token);
+            header("location: $redirection");
             exit; 
         }
 
@@ -161,7 +161,7 @@ class ControleurListe {
             $jour = $_POST['jour'];	
             $l->expiration = $annee . "-" .  $mois . "-" . $jour;
             $l->save();
-            header("location: /liste/" . $l->token);
+            header("location: " .  $this->container->router->pathFor('liste', ["token" => $l->token]); );
             exit; 
         }   
         $vue = new Vues\VueModifierListe($l, $listeItems, $this->container, $req);

@@ -48,23 +48,22 @@ class ControleurItem {
             return $resp;
         }
 
-        if(isset($_POST['nomReserveur'])){
+        if($req->getParsedBody()['nomReserveur'] != null){
             $item["nomReserveur"] = $req->getParsedBody()["nomReserveur"];
             $item->save();
-            if(isset($_POST['message'])){
+            if($req->getParsedBody()['message']) != null){
                 $m = new ReservationMessage();
-                $m->commentaire = $_POST['message'];
+                $m->commentaire = $req->getParsedBody()['message'];
                 $m->item_id = $args["id"];
                 $m->save(); 
             }
             
-            if(!isset($_COOKIE["username"])){
-                setcookie("username", $item["nomReserveur"], -1, "/");
-            }
-            header("Location:/liste/" . $args["token"] . "/item/" . $args["id"]);
+            if(!isset($_COOKIE["username"])) setcookie("username", $item["nomReserveur"], -1, "/");
+            $path = $this->container->router->pathFor('item', ["token" => $args["token"], "id" => $args["id"]]);
+            header("Location: $path");
             exit;
         } else if($req->getParsedBody()["valeurCagnotte"] != null){
-            $item->cagnotte = $_POST["valeurCagnotte"] + $item->cagnotte;
+            $item->cagnotte = $req->getParsedBody()["valeurCagnotte"] + $item->cagnotte;
             $item->save(); 
             if(Compte::isConnected()){
                 $l = ListeCompte::getParticipation($item->liste_id);
