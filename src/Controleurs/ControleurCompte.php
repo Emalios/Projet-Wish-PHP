@@ -146,15 +146,15 @@ class ControleurCompte{
     }
 
     public function supprimerCompte(Request $req, Response $resp, $args) {
-        $account = Account::where('login', '=', unserialize($_SESSION['login'])['login'])->first();
-        if (password_verify($_POST['mdp'], $account->hash)) {
-            $account->delete();
+        $c = Compte::where('login', '=', unserialize($_SESSION['login'])['login'])->first();
+        if (password_verify($_POST['mdp'], $c->hash)) {
+            $c->delete();
             unset($_SESSION['login']);
             $_SESSION['redirect']['msg'] = '<div class="alert alert-success">Votre compte a bien été supprimé.</div>';
             return $this->redirect($resp, 'home');
         } else {
             $_SESSION['redirect']['msg'] = '<div class="alert alert-danger">Mot de passe incorrect, réessayez.</div>';
-            return $this->redirect($resp, 'account');
+            return $this->redirect($resp, 'compte');
         }
     }
 }
