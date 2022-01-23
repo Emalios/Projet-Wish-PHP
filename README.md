@@ -1,4 +1,5 @@
 # Projet-Wish-PHP
+Equipe : Bravo
 
 ## Lien sur webetu
 https://webetu.iutnc.univ-lorraine.fr/www/cappelli6u/mywishlist/accueil
@@ -17,9 +18,9 @@ Nous avons un seul type de compte permettant d'être à la fois créateur et par
 de liste peut participer a des listes sans avoir a recréer un compte. De même, un participant qui possède un compte ne doit pas recréer un compte
 pour créer une liste. Cependant, nous avons bien vérifier qu'un compte créateur ne puisse pas participer à sa liste. 
 
-L'adresse mail du compte : emailDeTest@gmail.com
-Login : Professeur
-Mot de passe : MotDePasse6
+mail: createur@gmail.com, mdp: j'adorephp
+
+mail: participant@gmail.com, mdp: nonc'estfaux
 
 
 ## Tableau de bord
@@ -27,4 +28,4 @@ Mot de passe : MotDePasse6
 Bergerat Hugo : 25 27
 Cappellina Arthur : De 1 à 13, de 15 à 24 et la 26
 Condenseau Tom : /
-Marzouk Abdek : 14 28
+Marzouk Abdek : 14
