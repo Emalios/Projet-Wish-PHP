@@ -144,5 +144,18 @@ class ControleurCompte{
         $resp->getBody()->write($vue->render());
         return $resp;
     }
+
+    public function supprimerCompte(Request $req, Response $resp, $args) {
+        $c = Compte::where('login', '=', unserialize($_SESSION['login'])['login'])->first();
+        if (password_verify($_POST['mdp'], $c->hash)) {
+            $c->delete();
+            unset($_SESSION['login']);
+            $_SESSION['redirect']['msg'] = '<div class="alert alert-success">Votre compte a bien été supprimé.</div>';
+            return $this->redirect($resp, 'home');
+        } else {
+            $_SESSION['redirect']['msg'] = '<div class="alert alert-danger">Mot de passe incorrect, réessayez.</div>';
+            return $this->redirect($resp, 'compte');
+        }
+    }
 }
 

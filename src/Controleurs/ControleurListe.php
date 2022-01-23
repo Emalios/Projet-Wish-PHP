@@ -120,7 +120,7 @@ class ControleurListe {
 
         // On vérifie que l'utilisateur soit le proprietaire de la liste 
         if(!Liste::isOwner($l)) {
-            $redirection = $this->container->router->pathFor('liste', ["token" => $l->token]); 
+            $redirection = $this->container->router->pathFor('liste', ["token" => $l->token]);
             header("Location: $redirection");
             exit; 
         }
